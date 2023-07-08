@@ -1,0 +1,108 @@
+<div class="table-advanced" *ngIf="columns?.length">
+  <div class="loading-container" *ngIf="loading">
+    <div class="spinner-border"></div>
+  </div>
+
+  <div class="table-wrapper table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" *ngFor="let column of columns">
+            <div *ngIf="column.label == 'Select All'" class="btn justify-content-between">
+              <ng-container>
+                <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)" />
+
+                {{ column.label }}
+              </ng-container>
+            </div>
+
+            <button class="btn" [ngClass]="{ 'cursor-default': !column.canSort || !tempData.length }"
+              (click)="onSort(column)" *ngIf="column.label !== 'Select All'">
+              {{ column.label }}
+
+              <ng-container *ngIf="column.canSort && tempData?.length">
+                <fa-icon [icon]="faArrowUpLong" class="icon ms-2"
+                  [ngClass]="{ active: sort.direction === 'asc' && isSortColumnMatch(column) }"></fa-icon>
+
+                <fa-icon [icon]="faArrowDownLong" class="icon"
+                  [ngClass]="{ active: sort.direction === 'desc' && isSortColumnMatch(column) }"></fa-icon>
+              </ng-container>
+            </button>
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of tempData; let i = index">
+          <td *ngFor="let column of columns" (click)="gotoPage(item.id, column)">
+            <ng-template #oldContainer>
+              <ng-container *ngTemplateOutlet="
+                  columnTemplates[column.key] || columnDefaultTemplate;
+                  context: {$implicit: getItemValue(item, column.key),
+                    row: item,
+                    column: getColumnByKey(column.key),
+                    index: i }"></ng-container>
+            </ng-template>
+
+            <ng-container *ngIf="column.label == 'Select All'; else oldContainer">
+              <input type="checkbox" value="{{ item.orderCollectionId }}" [(ngModel)]="item.checked"
+                (click)="getSelectedItem(tempData[i], $event)" />
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot *ngIf="tablefoot.length > 0">
+        <tr>
+          <td *ngFor="let column of columns">
+            <ng-container *ngIf="tablefoot[0]?.hasOwnProperty(column.key)">
+              {{ tablefoot[0][column.key] }}
+            </ng-container>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="no-data" *ngIf="!loading && !tempData?.length">No data to display</div>
+  </div>
+
+  <div class="paging-wrapper" *ngIf="config.paging && tempData.length && total > limit">
+    <h6 class="showing">
+      Showing
+
+      <span>
+        {{ page * limit - (limit - 1) }} - {{ tempData.length === limit ? page * limit : total }}
+      </span>
+
+      from <span> {{ total }} </span> data
+    </h6>
+
+    <ngb-pagination [collectionSize]="total" [page]="page" [pageSize]="limit" [maxSize]="3" [ellipses]="false"
+      (pageChange)="onPageChange($event)" aria-label="Default pagination">
+      <ng-template ngbPaginationPrevious>
+        <svg width="9" height="15" viewBox="0 0 11 17" fill="#BDBDBD" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M9.32804 16.6743L1.05966 9.21509C0.705664 8.91166 0.705664 8.35538 1.05966 8.05195L9.32804 0.592708C9.85904 0.112282 10.7187 0.46628 10.7187 1.17428L10.7187 16.0928C10.7187 16.8008 9.85904 17.1548 9.32804 16.6743Z">
+          </path>
+        </svg>
+      </ng-template>
+
+      <ng-template ngbPaginationNext>
+        <svg width="9" height="15" viewBox="0 0 11 17" fill="#BDBDBD" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M1.96861 0.853985L10.555 8.31323C10.9226 8.61666 10.9226 9.17294 10.555 9.47637L1.96861 16.9356C1.41719 17.416 0.524414 17.062 0.524414 16.354L0.524414 1.43555C0.524414 0.727558 1.41719 0.37356 1.96861 0.853985Z">
+          </path>
+        </svg>
+      </ng-template>
+
+      <ng-template ngbPaginationNumber let-p>
+        <div class="page-number">
+          {{ p }}
+        </div>
+      </ng-template>
+    </ngb-pagination>
+  </div>
+</div>
+
+<ng-template #columnDefaultTemplate let-value let-row="row" let-column="column">
+  <div class="cell-default">{{ value }}</div>
+</ng-template>

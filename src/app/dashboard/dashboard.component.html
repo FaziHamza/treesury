@@ -1,0 +1,16 @@
+<div class="container-fluid g-0">
+  <app-header></app-header>
+  <main>
+    <app-sidebar
+      [ngClass]="{ 'app-sidebar-open': !(sidebarMinimized$ | async) }"
+      [navLinks]="navLinks"
+      (navLinkSelect)="onNavLinkSelect($event)"
+    ></app-sidebar>
+    <div
+      class="display-area p-3"
+      [ngClass]="{ 'display-area-shrink': !(sidebarMinimized$ | async) }"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

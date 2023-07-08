@@ -1,0 +1,46 @@
+<div class="card-wrapper">
+ 
+
+  <div class="notes-wrapper row">
+    <div class="col-lg-7">
+      <div class="row">
+        <div class="col-lg-4">
+          <app-dashboard-card [icon]="'assets/images/dashboard/bank.png'" [label]="'Total Deposited'"
+            [amount]="(cardsData.depositedAmount || 0)" [currency]="''"
+            [chequeAmount]="cardsData.depositedCount || 0" [isCurrency]="false"  [currency]="'JOD'">
+          </app-dashboard-card>
+        </div>
+        <div class="col-lg-4">
+          <app-dashboard-card [icon]="'assets/images/dashboard/collected.png'" [label]="'Collected'"
+            [amount]="cardsData.collectedChequsAmount || 0" [currency]="''" [chequeAmount]="cardsData.collectedChequsCount || 0"
+            [isCurrency]="false"  [currency]="'JOD'"></app-dashboard-card>
+        </div>
+        <div class="col-lg-4">
+          <app-dashboard-card [icon]="'assets/images/dashboard/replace.png'" [isCurrency]="false" [label]="'Replaced'"
+            [amount]="cardsData.replaceChequsAmount || 0" [chequeAmount]="cardsData.replaceChequsCount || 0"
+            [currency]="'JOD'"></app-dashboard-card>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="row">
+        <div class="col-lg-6">
+          <app-dashboard-card [icon]="'assets/images/dashboard/returned.png'" [label]="'Returned'" [isCurrency]="false"
+            [chequeAmount]="cardsData.returnChequsCount || 0" [amount]="cardsData.returnChequsAmount || 0"
+            [currency]="'JOD'"></app-dashboard-card>
+        </div>
+        <div class="col-lg-6">
+          <app-dashboard-card [icon]="'assets/images/dashboard/bounced.png'" [isCurrency]="false"
+            [chequeAmount]="cardsData.bounceChequsCount || 0" [label]="'Bounced'" [amount]="cardsData.bounceChequsAmount || 0"
+            [currency]="'JOD'"></app-dashboard-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <app-cheque-aging-report></app-cheque-aging-report>
+  </div>
+  <div class="row">
+    <app-dashboard-cheque-chart></app-dashboard-cheque-chart>
+  </div>
+</div>

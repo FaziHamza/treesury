@@ -1,0 +1,45 @@
+@import 'variables';
+
+main {
+  position: absolute;
+  width: 100%;
+  top: 4rem;
+}
+
+app-header {
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  height: 4rem;
+  z-index: 100;
+}
+
+app-sidebar {
+  position: fixed;
+  left: 0rem;
+  width: 60px;
+  height: 100%;
+  background-color: var(--#{$prefix}bg-surface-100);
+  box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.1);
+  z-index: 200;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: width 250ms ease-in;
+}
+
+.app-sidebar-open {
+  width: 250px;
+}
+
+.display-area {
+  position: absolute;
+  left: 60px;
+  width: calc(100% - 60px);
+  transition: width 250ms ease-in;
+}
+
+.display-area-shrink {
+  left: 250px;
+  width: calc(100% - 250px);
+  transition: width 250ms ease-in;
+}

@@ -1,0 +1,141 @@
+.filter-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.dropdown-action {
+  width: 140px;
+  height: 32px;
+  position: relative;
+  .btn {
+    width: 100%;
+    height: 100%;
+    background: #f8f8f8;
+    border: 1px solid #c4cdd5;
+    border-radius: 8px;
+    padding: 0 32px 0 16px;
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 24px;
+    color: #1b212d;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    svg {
+      position: absolute;
+      top: 50%;
+      right: 24px;
+      transform: translateY(-50%);
+    }
+  }
+  .dropdown-toggle {
+    &::after {
+      display: none !important;
+    }
+    &:hover {
+      background-color: #e8e8e8 !important;
+      color: #1b212d !important;
+    }
+    &:focus {
+      background-color: #dc3545 !important;
+      color: white !important;
+    }
+    &:active {
+      background-color: #f8f8f8 !important;
+      color: #1b212d !important;
+    }
+  }
+  .dropdown-menu {
+    border-radius: 12px;
+    border: none;
+    background-color: #fff;
+    column-count: 1;
+    column-gap: 0px;
+    position: absolute;
+    top: 0%;
+    z-index: 9999;
+    max-height: 300px;
+    overflow-y: auto;
+    right: 0;
+    transform: translate(0px, 40px) !important;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  .dropdown-menu::-webkit-scrollbar {
+    width: 10px;
+    background-color: #f5f5f5;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  .dropdown-menu::-webkit-scrollbar-thumb:active {
+    background-color: #333;
+  }
+
+  .dropdown-item {
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;
+    white-space: nowrap;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
+    padding: 6px 16px;
+    cursor: pointer;
+    &:hover,
+    &.selected {
+      background-color: #f8f8f8;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  .date-menu {
+    font-size: 12px;
+  }
+
+  .date-item {
+    padding: 0 16px;
+    margin-bottom: 0;
+    font-size: 12px;
+  }
+}
+
+nz-date-picker {
+  cursor: pointer;
+  color: #1b212d;
+  background: #f8f8f8;
+  border: 1px solid #c4cdd5 !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+
+  &:hover {
+    background-color: #e8e8e8;
+  }
+
+  ::ng-deep {
+    input {
+      font-weight: 500 !important;
+      font-size: 15px !important;
+      line-height: 24px !important;
+      cursor: pointer;
+
+      &::placeholder {
+        color: #929eae;
+      }
+    }
+  }
+}
+
+.chart-wrapper {
+  width: 99%; // not full width and fixes for responsive
+  height: 360px;
+}

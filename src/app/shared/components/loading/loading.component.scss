@@ -1,0 +1,11 @@
+@import 'variables';
+
+.loading {
+  text-align: center;
+  padding: 30px;
+
+  .icon {
+    font-size: 2.875rem;
+    color: var(--#{$prefix}primary-color);
+  }
+}

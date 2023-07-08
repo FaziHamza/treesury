@@ -1,0 +1,21 @@
+@mixin dark-mode {
+  $selector: &;
+
+  @media not print {
+    @if ($selector) {
+      .theme-dark & {
+        @content;
+      }
+    } @else {
+      .theme-dark {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin flex-centerer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,296 @@
+<div class="card-wrapper">
+  <div class="notes-wrapper row">
+    <div class="row">
+      <div class="col-lg-3" *ngFor="let item of carddetial">
+        <div class="card">
+          <div class="row">
+            <div class="col-md-4">
+              <img src='{{item.provider.imageFile}}' alt="" srcset="" width=72px;>
+            </div>
+            <div class="col-md-8">
+              <span class="label">Total No . {{item.cardsCount}} </span> <br>
+              <span class="label-txt">{{item.total | number : '1.3-3' }} JOD</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-lg-3 col-md-6">
+        <div class="input-group search-box">
+          <button class="btn" type="button" id="button-addon1">
+            <i class="fa-solid fa-search"></i>
+          </button>
+          <input type="text" class="form-control" [formControl]="searchChequeText" placeholder="Last 4 Digits" />
+          <button class="btn" type="button" id="button-addon1" [hidden]="searchChequeText.value == null"
+            (click)="removelast4Filter()">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="input-group ">
+          <ng-select (clear)="onClearprovider()" (change)="handleCategoryChange($event)" class="flex-grow-1 mt-3 mt-md-0"
+            placeholder="Search By Provider Name" [items]="provider" bindLabel="providerName" [formControl]="searchText"
+            bindValue="providerId">
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 filterFlex">
+        <div class="input-group ">
+          <ng-select (clear)="onClearcard()" (change)="handleCategoryChange2($event)" class="flex-grow-1 mt-3 mt-md-0"
+            placeholder="Search By Card Type" [items]="cardlist" bindLabel="description" bindValue="id">
+          </ng-select>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 filterFlex">
+        <div class="input-group search-box">
+          <div class="dropdown">
+            <button class="btn dropdownFilters" type="button">
+              <input [(ngModel)]="datepickerInput" type="text" (bsValueChange)="onDateValueChange($event)"
+                placeholder="Select Date" class="form-control" bsDatepicker
+                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
+              <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+              <!-- <img class="down" src="../../../../assets/images/down.png" alt=""> -->
+              <i class="fa-regular fa-circle-xmark" *ngIf="datepickerInput" (click)="removeCollectionDateFilter()"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-2">
+    <div class="row justify-content-end">
+      <div class="col-lg-10 col-md-6 d-flex justify-content-end">
+
+        <div class="dropdown">
+          <button class="btn dropdownButton more-filter-drop" type="button" id="dropdownMenuButton"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-plus"></i> More Filters
+          </button>
+          <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton">
+            <li>
+              <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="Invoice" class="checkBox" (change)="filterInvoice($event.target)" />
+                &nbsp; Invoice Number
+              </a>
+              <!-- <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="Commission" class="checkBox"
+                  (change)="filterCommission($event.target)" />
+                &nbsp;Commission
+              </a> -->
+              <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="Amount" class="checkBox" (change)="filterAmount($event.target)" />
+                &nbsp;Amount
+              </a>
+              <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="NetAmount" class="checkBox"
+                  (change)="filterNetAmount($event.target)" />
+                &nbsp;Net Amount
+              </a>
+              <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="BranchName" class="checkBox"
+                  (change)="filterBranchName($event.target)" />
+                &nbsp;Branch Name
+              </a>
+              <a class="dropdown-item">
+                <input type="checkbox" [(ngModel)]="RegisterName" class="checkBox"
+                  (change)="filterRegisterName($event.target)" />
+                &nbsp;Register Name
+              </a>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deposited Cheques List -->
+<div class="deposited-cheques-list-tabs">
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="row mt-3">
+        <div class="col-lg-2">
+          <h6>Status</h6>
+        </div>
+        <div class="col-lg-8">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-light">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="" checked
+                  (click)="IsPDCFilter('')">
+                <label class="form-check-label" for="exampleRadios1">
+                  All
+                </label>
+              </div>
+
+            </button>
+            <button type="button" class="btn btn-light">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value=""
+                  (click)="IsPDCFilter(30001)">
+                <label class="form-check-label" for="exampleRadios1">
+                  UnReconciled
+                </label>
+              </div>
+
+            </button>
+            <button type="button" class="btn btn-light">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="true"
+                  (click)="IsPDCFilter(30002)">
+                <label class="form-check-label" for="exampleRadios2">
+                  Reconciled
+                </label>
+              </div>
+
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5 text-end">
+      <button class="btn btn-add" routerLink="/credit-card/reconciliation">
+        <span>Create Reconciliation</span>
+      </button>
+
+    </div>
+    <div class="col-lg-12">
+      <!-- Clickfilter -->
+      <div class="filterFlex mt-4">
+        <!-- Invoice -->
+        <div class="dropdown" *ngIf="Invoice">
+          <div class="input-group search-box">
+            <button class="btn " type="button" id="button-addon1">
+              <i class="fa-solid fa-search"></i>
+            </button>
+            <input type="text" class="form-control" [formControl]="searchText" placeholder="Invoice" />
+
+            <button class="btn" type="button" id="button-addon1" [hidden]="searchText.value == null"
+              (click)="removeInvoiceFilter()">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+        <!-- Commission -->
+        <!-- <div class="dropdown" *ngIf="Commission">
+          <div class="input-group search-box">
+            <button class="btn" type="button" id="button-addon1">
+              <i class="fa-solid fa-search"></i>
+            </button>
+            <input type="text" class="form-control" placeholder="Commission" />
+            <button class="btn" type="button" id="button-addon1" [hidden]="Commission == null"  (click)="removeCommissionFilter()">
+              <i class="fa-solid fa-xmark"></i>
+          </button>
+          </div>
+        </div> -->
+        <!-- Amount -->
+        <div class="dropdown" *ngIf="Amount">
+          <div class="input-group search-box">
+            <button class="btn" type="button" id="button-addon1">
+              <i class="fa-solid fa-search"></i>
+            </button>
+            <input type="text" class="form-control" placeholder="Amount" [formControl]="amountchange"  (input)="validateInput($event)"  />
+            <button class="btn" type="button" id="button-addon1" [hidden]="amountchange.value == null"
+              (click)="removeAmountFilter()">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+
+          </div>
+        </div>
+        <!-- Net Amount -->
+        <div class="dropdown" *ngIf="NetAmount">
+          <div class="input-group search-box">
+            <button class="btn" type="button" id="button-addon1">
+                <i class="fa-solid fa-search"></i>
+            </button>
+            <input type="text" class="form-control" placeholder="Net Amount" [formControl]="netamountchange" (input)="validateInput($event)"/>
+            <button class="btn" type="button" id="button-addon1" [hidden]="netamountchange.value == null" (click)="removeNetAmountFilter()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        </div>
+        <!-- Branch Name -->
+        <div class="dropdown" *ngIf="BranchName">
+          <div class="input-group ">
+            <ng-select (clear)="onClear()" (change)="handleCategoryChange3($event)"
+              class=" " placeholder="Search Branch" [items]="branch"
+              bindLabel="branchName" bindValue="branchId">
+            </ng-select>
+
+            <!-- <button class="btn" type="button" id="button-addon1" [hidden]="netamountchange.value == null" (click)="removeBranchNameFilter()">
+              <i class="fa-solid fa-xmark"></i>
+          </button> -->
+          </div>
+        </div>
+        <!-- Register Name -->
+        <div class="dropdown" *ngIf="RegisterName">
+          <div class="input-group ">
+            <ng-select (clear)="onClearR()" (change)="handleCategoryChange4($event)"
+              class="flex-grow-1 mt-3 mt-md-0 border-0" placeholder="Register Name" [items]="register"
+              bindLabel="registersName" bindValue="id">
+            </ng-select>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-lg-12 text-heading">
+    <h5>Cards Transactions List</h5>
+    <h6 class="text-end">Total No. : {{ this.totalAllRecordsCount }}</h6>
+  </div>
+  <div class="col-md-12">
+    <app-table-advanced [config]="tableConfig" [columns]="tableColumns" [data]="chequeList" [loading]="loading"
+      [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
+      (pageUpdated)="onPageChange($event)" >
+
+
+      <ng-template libTableAdvancedColumn="provider" let-row="row" >
+        {{ row.provider?.providerName}}
+      </ng-template>
+
+      <ng-template libTableAdvancedColumn="collectionAt" let-row="row">
+        {{ row?.collectionAt | date}}
+      </ng-template>
+
+      <ng-template libTableAdvancedColumn="branch" let-row="row">
+        {{ row.branch?.branchName}}
+      </ng-template>
+      <ng-template libTableAdvancedColumn="registers" let-row="row">
+        {{ row.register?.registersName}}
+      </ng-template>
+      <ng-template libTableAdvancedColumn="cardType" let-row="row">
+        <img src="{{row.cardType?.lookupImage}}" alt="" srcset="" width="55px">
+      </ng-template>
+      <ng-template libTableAdvancedColumn="cardCollectionJod" let-row="row">
+        {{ row?.cardCollectionJod | number: '1.3-3'}}
+      </ng-template>
+      <ng-template libTableAdvancedColumn="cardCollectionJodNet" let-row="row">
+        {{ row?.cardCollectionJodNet | number: '1.3-3'}}
+      </ng-template>
+      <ng-template libTableAdvancedColumn="statusObj" let-row="row">
+        <p class="collected-btn" [style.color]="row?.statusObj?.lookupTextColor"
+          [style.background-color]="row?.statusObj?.lookupBGColor"> {{row?.statusObj?.translations?.[0].lookupName}} </p>
+      </ng-template>
+
+
+      <ng-template libTableAdvancedColumn="Action" let-row="row" >
+        <i class="fa-light fa-eye" style="cursor: pointer;" (click)="gotopaymentdetails(row.ordersCardsCollectionId)"></i>
+      </ng-template>
+    </app-table-advanced>
+
+  </div>
+</div>

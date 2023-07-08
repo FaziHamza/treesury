@@ -1,0 +1,35 @@
+<nav class="navbar navbar-expand px-2">
+  <a
+    class="navbar-brand px-1"
+    *ngIf="!mobileScreen && !(sidebarMinimized$ | async)"
+    [routerLink]="['']"
+  >
+    <img width="105" height="17.5" src="assets/images/markazia.png" alt="" />
+  </a>
+  <button
+    type="button"
+    class="btn btn-danger btn-circle"
+    [style.margin-left.px]="!(sidebarMinimized$ | async) ? 50 : 0"
+    (click)="sidebarToggle()"
+  >
+    <fa-icon [icon]="(sidebarMinimized$ | async) ? faArrowRight : faArrowLeft"></fa-icon>
+  </button>
+  <div class="navbar-collapse px-3">
+    <div *ngIf="!mobileScreen" class="page-tile">
+      {{ title$ | async }}
+    </div>
+  </div>
+  <ul class="navbar-nav">
+    <li ngbDropdown class="nav-item">
+      <a ngbDropdownToggle class="nav-link" href="javascript:void(0)">
+        <span class="char-name">
+          {{ firstName | slice : 0 : 1 }}{{ lastName | slice : 0 : 1 }}
+        </span>
+        {{ fullName }}
+      </a>
+      <ul ngbDropdownMenu>
+        <li><a ngbDropdownItem routerLink="/profile">My Profile</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,10 @@
+@import '~intl-tel-input/build/css/intlTelInput.css';
+
+.iti {
+  width: 100%;
+
+  ul.iti__country-list {
+    font-size: 0.75rem;
+    max-width: 400px;
+  }
+}

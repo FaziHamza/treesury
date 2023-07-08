@@ -1,0 +1,118 @@
+<div class="row mt-3">
+    <div class="col-lg-12 text-heading">
+        <h5 class="mb-3">Reconciliation Details</h5> 
+    </div>
+
+    <div class="col-md-3">
+        <label class="mb-1 label">Created by:</label>
+        <p class="P-light">{{ reconciliation && reconciliation[0]?.createdBy.fullName ? reconciliation[0]?.createdBy.fullName : '-' }}</p>
+      </div>
+
+      <div class="col-md-3">
+        <label class="mb-1 label">Date:</label>
+        <p class="P-light">{{ reconciliation && reconciliation[0]?.createdAt ? (reconciliation[0]?.createdAt | date :'dd MMM yyyy') : '-' }}</p>
+      </div>
+      
+      <div class="col-md-3">
+        <label class="mb-1 label">Time:</label>
+        <p class="P-light">{{ extractedTime | date : 'shortTime' }}</p>
+      </div>
+      
+      <div class="col-md-3" *ngIf="reconciliation">
+        <label class="mb-1 label">Reconciliation Amount:</label>
+        <p class="P-light">{{ reconciliation[0]?.totalAmount | number : '1.3-3'}} JOD</p>
+      </div>
+      
+      <div class="col-md-3" *ngIf="reconciliation">
+        <label class="mb-1 label">Reconciliation Net Amount:</label>
+        <p class="P-light">{{ reconciliation[0]?.totalNetAmount | number : '1.3-3' }} JOD</p>
+      </div>
+      
+      <div class="col-md-3">
+        <label class="mb-1 label">Reconciliation Number:</label>
+        <p class="P-light">{{ reconciliation && reconciliation[0]?.reconciliationHistoryId ? reconciliation[0]?.reconciliationHistoryId : '-' }}</p>
+      </div>
+      
+      
+</div>
+
+<div class="row mt-3">
+    <div class="col-md-10">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="input-group search-box">
+                    <button class="btn" type="button" id="button-addon1">
+                      <i class="fa-solid fa-search"></i>
+                    </button>
+                    <input type="text" class="form-control" [formControl]="searchChequeText" placeholder="Last 4 Digits" numbersOnly/>
+                    <button class="btn" type="button" id="button-addon1" [hidden]="searchChequeText.value == null" (click)="removeFourDigit()">
+                      <i class="fa-solid fa-xmark"></i>
+                    </button>
+                  </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="input-group ">
+                  <ng-select (clear)="onClear()" (change)="handleCategoryChange($event)" class="flex-grow-1 mt-3 mt-md-0"
+                    placeholder="Search By Provider Name" [items]="provider" bindLabel="providerName"  [formControl]="searchText" bindValue="providerId">
+                  </ng-select>
+                </div>
+              </div>
+            <div class="col-lg-3 col-md-6 filterFlex">
+                <div class="input-group search-box">
+                    <div class="dropdown">
+                        <button class="btn dropdownFilters" type="button">
+                            <input [(ngModel)]="datepickerInput" type="text" (bsValueChange)="onDateValueChange($event)"
+                                placeholder="Select Date" class="form-control" bsDatepicker
+                                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
+                            <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+                            <!-- <img class="down" src="../../../../assets/images/down.png" alt=""> -->
+                            <i class="fa-regular fa-circle-xmark" *ngIf="datepickerInput"
+                                (click)="removeCollectionDateFilter()"></i>
+                        </button>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+<div class="row mt-3">
+    <div class="col-lg-12 text-heading mt-2">
+        <h5 >Reconciled Transactions List</h5>
+        <h6 class="text-end">Total No. : {{totalAllRecordsCount}}</h6>
+    </div>
+    <div class="col-lg-12 mt-4">
+        <app-table-advanced [config]="tableConfig" [columns]="tableColumns" [data]="chequeList" [loading]="loading"
+            [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
+            (pageUpdated)="onPageChange($event)">
+            <ng-template libTableAdvancedColumn="No" let-row="row" let-index="index">
+                {{ index + 1 }}
+            </ng-template>
+            <ng-template libTableAdvancedColumn="createdAt" let-row="row">
+              {{ row?.createdAt | date :'dd MMM yyyy'}}
+            </ng-template>
+            <ng-template libTableAdvancedColumn="provider" let-row="row">
+                {{ row.provider?.providerName}}
+            </ng-template>
+            <ng-template libTableAdvancedColumn="branch" let-row="row">
+                {{ row.branch?.branchName}}
+              </ng-template>
+              <ng-template libTableAdvancedColumn="register" let-row="row">
+                {{ row.register?.registersName}}
+              </ng-template>
+
+              <ng-template libTableAdvancedColumn="cardCollectionJod" let-row="row">
+                {{ row?.cardCollectionJod | number : '1.3-3'}} JOD
+              </ng-template>
+
+              <ng-template libTableAdvancedColumn="cardCollectionJodNet" let-row="row">
+                {{ row?.cardCollectionJodNet | number : '1.3-3'}} JOD
+              </ng-template>
+
+              <ng-template libTableAdvancedColumn="cardType" let-row="row">
+                <img src="{{row.cardType?.lookupImage}}" alt="" srcset="" width="55px">
+              </ng-template>
+        </app-table-advanced>
+
+    </div>
+</div>

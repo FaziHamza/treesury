@@ -1,0 +1,18 @@
+<button type="button" class="btn" [ngClass]="{ 'cursor-default': !cursorPointer }">
+  <svg-icon
+    *ngIf="alt"
+    src="/assets/svg/edit-alt.svg"
+    [svgStyle]="{
+      stroke: 'var(--dxfe-primary-color)',
+      fill: 'var(--dxfe-primary-color)',
+      height: heightInRem
+    }"
+    class="icon"
+  ></svg-icon>
+  <svg-icon
+    *ngIf="!alt"
+    src="/assets/svg/edit.svg"
+    [svgStyle]="{ stroke: 'var(--dxfe-primary-color)', height: heightInRem }"
+    class="icon"
+  ></svg-icon>
+</button>

@@ -1,0 +1,89 @@
+:host {
+  ::ng-deep {
+    .ant-tabs-nav {
+      margin: 0 0 24px;
+    }
+  }
+}
+
+.card-wrapper {
+  margin-bottom: 25px;
+
+  .card {
+    margin-bottom: 0;
+    flex: 1;
+  }
+
+  .columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+
+    .card {
+      min-width: 400px;
+    }
+  }
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.card-subheading {
+  margin-bottom: 10px;
+}
+
+
+@media (max-width: 768px) {
+  .card-wrapper {
+    .columns {
+      flex-direction: column;
+
+      .card {
+        min-width: 0;
+      }
+    }
+  }
+}
+
+.more-filter-drop {
+  height: 46px;
+  width: 150px;
+  background: #4e9aff;
+  border-radius: 8px;
+  color: white;
+  outline: none;
+  border: none;
+}
+.label {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  color: #929eae;
+}
+.label-txt {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.016em;
+  color: #00261c;
+}
+.checkBox {
+  accent-color: #dc3545;
+  width: 20px;
+  height: 20px;
+}
+.dropdownFilters {
+
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #dc3545;
+}
+

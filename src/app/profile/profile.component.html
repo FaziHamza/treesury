@@ -1,0 +1,257 @@
+<div class="card-page">
+  <div class="row" *ngIf="!loading; else loadingTemplate">
+    <form [formGroup]="form">
+      <div class="col-md-12">
+        <div class="page-title">
+          <h3>Account Information</h3>
+        </div>
+        <div class="card-form position-relative">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group overflow-hidden position-relative">
+                <label>Full Name*</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder=""
+                  formControlName="fullName"
+                  alphabetOnly
+                  required
+                />
+                <app-edit-icon
+                  class="btn-floating"
+                  [heightInRem]="'1.25rem'"
+                  [alt]="isShowFullName"
+                  [cursorPointer]="!isShowFullName"
+                  (click)="editFullname()"
+                ></app-edit-icon>
+              </div>
+              <div *ngIf="formValid['fullName'].invalid">
+                <div class="error" *ngIf="formValid['fullName']?.errors?.['required']">
+                  Name is required
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group overflow-hidden position-relative">
+                <label>Email*</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="email"
+                  [value]="userDetails.email"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group position-relative">
+                <label>Phone Number</label>
+                <div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder=""
+                    libTelInput
+                    [libTelInputOptions]="{
+                      initialCountry: 'jo',
+                      preferredCountries: ['jo', 'sa']
+                    }"
+                    formControlName="mobile"
+                    numbersOnly
+                  />
+                </div>
+                <app-edit-icon
+                  class="btn-floating"
+                  [heightInRem]="'1.25rem'"
+                  [alt]="isShowMobile"
+                  [cursorPointer]="!isShowMobile"
+                  (click)="editMobile()"
+                ></app-edit-icon>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group overflow-hidden position-relative">
+                <label>Branch Name </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="userDetails?.branch?.branchName"
+                  disabled
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group overflow-hidden position-relative">
+                <label>Register Name </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  disabled
+                  [value]="userDetails?.register?.registersName"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group overflow-hidden position-relative">
+                <label>Register No.</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [value]="userDetails?.register?.id"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="btns-group">
+          <button type="button" class="btn btn-cancel" (click)="reset()">Cancel</button>
+          <button
+            type="button"
+            class="btn btn-save"
+            [disabled]="!isShowFullName && !isShowMobile"
+            (click)="editUser()"
+          >
+            Update Profile
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="col-md-12">
+      <div class="page-title">
+        <h3>Working Hours</h3>
+      </div>
+      <div class="card-form position-relative">
+        <div class="row" *ngFor="let item of userDetails.userWorkingHours; let i = index">
+          <div class="col-sm-4">
+            <div class="form-group day-active">
+              <div class="form-check form-switch justify-content-between">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  role="switch"
+                  id="flexSwitchCheckDefault"
+                  [checked]="item.selected"
+                  disabled
+                />
+                <label for=""> {{ item.day[0]?.lookupName }} </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="">
+              <div class="from-to-time">
+                <p>From</p>
+                <input
+                  type="time"
+                  name="fromTime"
+                  class="form-control"
+                  [value]="item.fromTime"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="">
+              <div class="from-to-time">
+                <p>To</p>
+                <input
+                  type="time"
+                  name="toTime"
+                  class="form-control"
+                  [value]="item.fromTime"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="page-title">
+        <h3>Contract</h3>
+      </div>
+      <div class="card-form position-relative">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group overflow-hidden position-relative">
+              <label>Start Date</label>
+              <input
+                type="date"
+                class="form-control"
+                placeholder=""
+                disabled
+                [value]="userDetails.contractStartDate"
+              />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group overflow-hidden position-relative">
+              <label>End Date</label>
+              <input
+                type="date"
+                class="form-control"
+                placeholder=" "
+                disabled
+                [value]="userDetails.contractEndDate"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="page-title">
+        <h3>Role</h3>
+      </div>
+      <div class="card-form position-relative">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="form-group overflow-hidden position-relative">
+              <input
+                name="fullName"
+                type="text"
+                class="form-control"
+                [value]="userDetails.role.name"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="col-md-4" style="padding-top: 15px">
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="indoor"
+                [value]="userDetails.indoor"
+                [checked]="userDetails.indoor"
+                disabled
+              />
+              <label class="form-check-label" for="indoor"> indoor </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="outdoor"
+                [value]="userDetails.outdoor"
+                [checked]="userDetails.outdoor"
+                disabled
+              />
+              <label class="form-check-label" for="outdoor"> outdoor </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTemplate>
+  <app-loading></app-loading>
+</ng-template>

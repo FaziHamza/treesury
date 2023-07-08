@@ -1,0 +1,66 @@
+fa-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+.heading1 {
+  font-family: 'KumbhSans-SemiBold', sans-serif;
+  font-size: 0.938rem;
+  line-height: 1.25rem;
+  color: var(--#{$prefix}heading-color-300);
+}
+
+.small-text-muted {
+  font-size: 0.938rem;
+  line-height: 1.25rem;
+  color: var(--#{$prefix}gray-color-700);
+}
+
+.edit-icon {
+  margin: 0px 15px;
+  z-index: 5;
+  position: relative;
+}
+
+.fw-bold {
+  font-family: 'KumbhSans-Bold', sans-serif !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.mt-30 {
+  margin-top: 30px !important;
+}
+
+.pt-30 {
+  padding-top: 30px !important;
+}
+
+h6,
+.h6,
+h5,
+.h5,
+h4,
+.h4,
+h3,
+.h3,
+h2,
+.h2,
+h1,
+.h1 {
+  font-family: 'KumbhSans-Medium', sans-serif !important;
+}
+
+.total-amount {
+  font-family: 'KumbhSans-SemiBold', sans-serif;
+  font-size: 0.875rem;
+  color: var(--#{$prefix}heading-color-200);
+  text-align: end;
+}

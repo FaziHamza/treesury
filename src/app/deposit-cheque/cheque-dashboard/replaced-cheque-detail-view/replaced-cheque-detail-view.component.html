@@ -1,0 +1,110 @@
+<div class="modal-body" >
+<div class="cr-replace-heading">
+  <h6>Replace Cheque Detail View</h6>
+  <div class="d-flex right-title">
+    <div class="d-flex">
+      <h5>Replace By:</h5>
+      <p>Sofy</p>
+    </div>
+    <div class="d-flex">
+      <h5 class="bold">Replace Date:</h5>
+      <p>14/12/2023</p>
+    </div>
+  </div>
+</div>
+<div class="card-page">
+  <div class="row">
+    <div class="col-md-9">
+      <div class="btn-tabs">
+        <button type="button" class="btn" *ngFor="let item of replacedCheque; let index=index"
+          [class.active]="item.id === selectedValue" (click)="chooseDeposit(item,index)">
+          {{ item.name}}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngFor="let item of selectedCheque.children;">
+    <div class="cr-replace-view">
+      <div class="cr-replace-head">
+        <div class="row">
+          <div class="col-lg-3 col-sm-6">
+            <div class="block">
+              <h6 class="title">
+                Amount to Pay
+              </h6>
+              <p>{{item.ChequeAmount}}</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="block">
+              <h6 class="title">
+                Cheque No
+              </h6>
+              <p>{{item.ChequeNumber}}</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="block">
+              <h6 class="title">
+                Date
+              </h6>
+              <p>{{item.ChequeDate}}</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <h6 class="title">
+              Bank
+            </h6>
+            <p>{{item.ChauqeBankID}}</p>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="block">
+              <h6 class="title">
+                Cheque drawer name
+              </h6>
+              <p>{{item.ChauqeName}}</p>
+            </div>
+          </div>
+          <div class="col-lg-3 col-sm-6">
+            <div class="block">
+              <h6 class="title">
+              </h6>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" [checked]="item.Customer" type="checkbox" disabled />
+                <label class="form-check-label" for="indoor"> Same Customer </label>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-12">
+            <div class="cr-card mt-3">
+              <div class="wizard-content">
+                <div>
+                  <div>
+                    <div class="top-heading">
+                      <h5>{{selectedCheque.name}}</h5>
+                      <button class="btn btn-light collected-btn">Collected</button>
+                    </div>
+                    <img src="../../../assets/cheque.png" width="100%"  height="300px"  />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 mt-3">
+            <div class="block">
+              <h6 class="title">No note has been added
+              </h6>
+              <p>{{item.Note}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-12">
+      <div class="btns-group">
+        <button type="button" class="btn btn-cancel" (click)="close()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

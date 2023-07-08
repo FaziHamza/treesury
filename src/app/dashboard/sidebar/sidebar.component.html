@@ -1,0 +1,24 @@
+<div class="sidebar-content">
+  <div class="nav-list">
+    <ng-container *ngFor="let link of links">
+      <button
+        type="button"
+        class="nav-list-item"
+        [ngClass]="{ active: selectedNavLink?.id === link.id }"
+        (click)="onSelect(link)">
+        <svg-icon *ngIf="link.icon" src="/assets/svg/{{ link.icon }}.svg" class="icon"></svg-icon>
+        <span>{{ link.name }}</span>
+      </button>
+    </ng-container>
+  </div>
+  <div class="mb-2" *ngIf="!(minimized$ | async)">
+    <button type="button" class="nav-list-item" (click)="logout()">
+      <svg-icon src="/assets/svg/logout.svg" class="icon"></svg-icon>
+      <span>Back To Portal</span>
+    </button>
+    <a type="button" class="nav-list-item version">
+      <span class="icon"></span>
+      <span>Version 0.0.11</span>
+    </a>
+  </div>
+</div>

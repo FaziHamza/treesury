@@ -1,0 +1,27 @@
+@import 'variables';
+
+.message {
+  text-align: center;
+  padding: 50px 50px;
+
+  .icon {
+    font-size: 5rem;
+    color: #75b878;
+    margin-bottom: 30px;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+
+  .btn {
+    border: 1px solid var(--#{$prefix}border-color-600);
+    width: 120px;
+    border-radius: 30px;
+    display: block;
+    color: var(--#{$prefix}title-color);
+    font-family: 'KumbhSans-SemiBold', sans-serif;
+    font-size: 0.875rem;
+  }
+}

@@ -1,0 +1,42 @@
+@import 'variables';
+
+.message {
+  font-family: 'KumbhSans-SemiBold', sans-serif;
+  font-size: 1.25rem;
+  line-height: 1.563rem;
+  text-align: center;
+  color: var(--#{$prefix}heading-color-300);
+
+  ::ng-deep {
+    .primary-highlight {
+      color: var(--#{$prefix}primary-color);
+    }
+  }
+}
+
+button {
+  border-radius: 10px;
+  font-family: 'KumbhSans-SemiBold', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.375rem;
+  text-align: center;
+  width: 150px;
+  height: 48px;
+  border: unset;
+}
+
+.btn-no {
+  background-color: var(--#{$prefix}bg-surface-100);
+  color: var(--#{$prefix}primary-color);
+  margin-right: 20px;
+}
+
+.btn-yes {
+  background-color: var(--#{$prefix}primary-color);
+  color: $white;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}

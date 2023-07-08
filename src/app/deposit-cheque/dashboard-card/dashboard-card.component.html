@@ -1,0 +1,11 @@
+<div class="card-note">
+  <div class="icon-box">
+    <img [src]="icon" />
+  </div>
+  <div class="content">
+    <span class="label-txt">{{ label }}</span>
+    <span class="label">{{ chequeAmount }} Cheques</span>
+    <span class="amount" *ngIf="isCurrency">{{ amount | number : ".3" }} {{ currency }}</span>
+    <span class="amount" *ngIf="!isCurrency">{{ amount | number : ".3"}} {{ currency }}</span>
+  </div>
+</div>

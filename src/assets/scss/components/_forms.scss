@@ -1,0 +1,110 @@
+input {
+  &.form-control {
+    &:focus {
+      box-shadow: none;
+      outline: 0;
+    }
+  }
+}
+
+.form-check-input {
+  &:checked {
+    background-color: var(--#{$prefix}primary-color);
+    border-color: var(--#{$prefix}primary-color);
+  }
+
+  &:disabled {
+    pointer-events: none;
+    filter: none;
+    opacity: 1;
+  }
+}
+
+.label-active {
+  margin-right: 55px !important;
+}
+
+input[type='radio'] {
+  accent-color: var(--#{$prefix}primary-color);
+}
+
+.custom-input-field {
+  border-radius: 8px;
+  height: 45px;
+}
+
+.custom-label-field {
+  font-family: 'KumbhSans-Medium', sans-serif;
+  font-size: 0.938rem;
+  line-height: 1.25rem;
+  color: var(--#{$prefix}heading-color-300);
+  padding-bottom: 6px;
+}
+
+.card-form {
+  background-color: var(--#{$prefix}bg-surface);
+  border: 0.5px solid var(--#{$prefix}border-color-500);
+  box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  margin: 0px 20px 20px;
+  padding: 30px;
+
+  .form-group {
+    margin-bottom: 5px;
+  }
+
+  label {
+    font-family: 'KumbhSans-SemiBold', sans-serif;
+    font-size: 0.875rem;
+    color: var(--#{$prefix}heading-color-300);
+    margin-bottom: 10px;
+  }
+
+  .form-control {
+    border: 1px solid var(--#{$prefix}border-color-700);
+    border-radius: 12px;
+    font-size: 0.875rem !important;
+    height: 46px;
+  }
+
+  .form-check-input:checked {
+    background-color: var(--#{$prefix}primary-color);
+    border-color: var(--#{$prefix}primary-color);
+  }
+
+  .form-check.form-switch {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+
+    .form-check-input {
+      width: 3em !important;
+      height: 1.6em;
+    }
+
+    label {
+      margin-bottom: 0px;
+      margin: 0px 10px;
+    }
+  }
+
+  .error {
+    font-size: 0.875rem;
+    color: #f44336;
+    font-family: 'KumbhSans-Medium', sans-serif;
+    padding: 7px;
+    display: block;
+  }
+
+  .from-to-time {
+    display: flex;
+    margin-bottom: 15px;
+
+    p {
+      font-size: 0.938rem;
+      color: var(--#{$prefix}title-color);
+      padding: 10px;
+      font-family: 'KumbhSans-SemiBold', sans-serif;
+    }
+  }
+}

@@ -1,0 +1,23 @@
+:root,
+:host {
+  height: 100%;
+
+  --#{$prefix}primary-color: #{$primary-color};
+  --#{$prefix}title-color: #{$title-color};
+  --#{$prefix}link-color: #{$link-color};
+
+  --#{$prefix}gray-color-500: #{$gray-color-500};
+  --#{$prefix}gray-color-700: #{$gray-color-700};
+
+  --#{$prefix}heading-color-100: #{$heading-color-100};
+  --#{$prefix}heading-color-200: #{$heading-color-200};
+  --#{$prefix}heading-color-300: #{$heading-color-300};
+
+  --#{$prefix}bg-surface: #{$bg-surface};
+  --#{$prefix}bg-surface-100: #{$bg-surface-100};
+
+  --#{$prefix}border-color-100: #{$border-color-100};
+  --#{$prefix}border-color-500: #{$border-color-500};
+  --#{$prefix}border-color-600: #{$border-color-600};
+  --#{$prefix}border-color-700: #{$border-color-700};
+}

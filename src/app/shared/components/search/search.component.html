@@ -1,0 +1,18 @@
+<div class="input-group search-box">
+  <button type="button" class="btn" (click)="clear()">
+    <fa-icon [icon]="faSearch"></fa-icon>
+  </button>
+  <input
+    type="text"
+    class="form-control"
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    (input)="onChange($event)"
+    autocomplete="off"
+    alphabetOnly
+    trimOnBlurInput
+  />
+  <button type="button" class="btn" (click)="clear()" [hidden]="!(value || '').length">
+    <fa-icon [icon]="faXmark"></fa-icon>
+  </button>
+</div>

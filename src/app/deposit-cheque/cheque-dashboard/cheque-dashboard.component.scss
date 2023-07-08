@@ -1,0 +1,64 @@
+:host {
+  ::ng-deep {
+    .ant-tabs-nav {
+      margin: 0 0 24px;
+    }
+  }
+}
+
+.card-wrapper {
+  margin-bottom: 25px;
+
+  .card {
+    margin-bottom: 0;
+    flex: 1;
+  }
+
+  .columns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+
+    .card {
+      min-width: 400px;
+    }
+  }
+}
+
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.card-subheading {
+  margin-bottom: 10px;
+}
+
+.notes-wrapper {
+  // display: flex;
+  // flex-wrap: wrap;
+  // gap: 16px;
+}
+
+.btn {
+  height: 40px;
+
+  svg {
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-wrapper {
+    .columns {
+      flex-direction: column;
+
+      .card {
+        min-width: 0;
+      }
+    }
+  }
+}

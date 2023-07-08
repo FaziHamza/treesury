@@ -1,0 +1,26 @@
+$prefix: dxfe-;
+
+$font-size-root: 0.875rem;
+
+$white: #fff;
+$black: #000;
+$primary-color: #dc3545;
+$title-color: $black;
+$link-color: #4e9aff;
+
+$gray-color-500: #c9c9d1;
+$gray-color-700: #d1d1d1;
+
+$heading-color-100: #929eae;
+$heading-color-200: #78778b;
+$heading-color-300: #1b212d;
+
+$bg-surface: var(--#{$prefix}white);
+$bg-surface-100: #f8f8f8;
+
+$table-bg: transparent;
+
+$border-color-100: #f5f5f5;
+$border-color-500: #c4cdd5;
+$border-color-600: #ddd;
+$border-color-700: #d1d1d1;

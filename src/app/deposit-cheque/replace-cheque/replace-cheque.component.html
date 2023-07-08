@@ -1,0 +1,248 @@
+<div class="cr-card" *ngIf="!isLoading">
+  <div class="top-heading">
+    <h5>
+      Replace Cheque <br><span class="heading-break">You are about to Replace the following Cheque</span>
+    </h5>
+    <p class="btn-Returned">
+      Returned
+    </p>
+  </div>
+  <div class="cr-card">
+    <div class="card-head">
+      <div class="row">
+        <div class="col-lg-2">
+          <h6 class="title">
+            Cheque
+            No.
+          </h6>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="title">
+            Customer Name
+          </h6>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="title">
+            Bank Name
+          </h6>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="title">
+            Due Date
+          </h6>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="title">
+            Amounts
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeNo">{{details?.chequeNo}}</p>
+          <p *ngIf="!details?.chequeNo">---</p>
+        </div>
+        <div class="col-lg-3">
+          <p *ngIf="details?.customer?.customerName">{{details?.customer?.customerName}} <br />
+            {{details?.customer?.mobile}}</p>
+          <p *ngIf="!details?.customer?.customerName">---</p>
+        </div>
+        <div class="col-lg-3" *ngIf="details?.bank?.translations;else banks">
+          <p *ngIf="details?.bank?.translations?.[0]?.lookupName"> <img [src]="details?.bank?.imagePath" height="25px"
+              width="25px" /> {{details?.bank?.translations?.[0]?.lookupName}}</p>
+          <p *ngIf="!details?.bank">---</p>
+        </div>
+        <ng-template #banks>
+          <div class="col-lg-3">
+            <p *ngIf="details?.bank"> <img [src]="details?.bank?.imagePath" height="25px" width="25px" />
+              {{details?.bank}}</p>
+            <p *ngIf="!details?.bank">---</p>
+          </div>
+        </ng-template>
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeDate">{{details?.chequeDate | date :'dd MMM yyyy'}}</p>
+          <p *ngIf="!details?.chequeDate">---</p>
+        </div>
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod}}</p>
+          <p *ngIf="!details?.chequeCollectionJod">---</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row mt-2">
+      <div class="col-12">
+        <div class="top-heading bb-none">
+          <h5 class="heading">
+            New Cheque
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group overflow-hidden position-relative">
+            <label class="custom-label-field">Amount to Pay <span class="text-danger"> *</span></label>
+            <h6>{{details?.chequeCollectionJod}} JOD</h6>
+            <!-- <input formControlName="ChequeId" name="ChequeId" type="hidden" /> -->
+            <!-- <input formControlName="ChequeAmount" [disabled]="true" name="ChequeAmount" type="number"
+                        class="form-control custom-input-field" placeholder="Enter Amount" required /> -->
+            <!-- <button class="btn btn-remove" *ngIf="form.get('ChequeAmount')?.value">
+                            <fa-icon [icon]="faXmark"></fa-icon>
+                        </button> -->
+            <!-- <div *ngIf="submitted && formValid['ChequeAmount']?.invalid" class="ng-dirty text-danger">
+                            <span class="error" *ngIf="formValid['ChequeAmount']?.errors?.['required']">
+                                Cheque Amount is required, please fill.</span>
+                        </div> -->
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group overflow-hidden position-relative">
+            <label class="custom-label-field">Cheque No <span class="text-danger"> *</span></label>
+            <input formControlName="ChequeNo" numbersOnly name="ChequeNo" type="number" trimOnBlurInput
+              class="form-control custom-input-field" placeholder="Type name" autocomplete="off" required />
+            <button class="btn btn-remove" *ngIf="form.get('ChequeNo')?.value" (click)="remove('ChequeNo')">
+              <fa-icon [icon]="faXmark"></fa-icon>
+            </button>
+            <div *ngIf="submitted && formValid['ChequeNo']?.invalid" class="ng-dirty text-danger">
+              <span class="error" *ngIf="formValid['ChequeNo']?.errors?.['required']">
+                Cheque Number is required, please fill.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group overflow-hidden position-relative">
+            <label class="custom-label-field">Date <span class="text-danger"> *</span> </label>
+            <button class="btn dropdownFilters custom-date-field" type="button">
+              <input formControlName="ChequeDate" type="text" (bsValueChange)="onDateValueChange($event)"
+                placeholder="Select Date" class="form-control datepicker" bsDatepicker
+                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
+              <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+              <i class="fa-regular fa-circle-xmark" *ngIf="form.get('ChequeDate')?.value"
+                (click)="removeCollectionDateFilter()"></i>
+            </button>
+            <div *ngIf="submitted && formValid['ChequeDate']?.invalid" class="ng-dirty text-danger">
+              <span class="error" *ngIf="formValid['ChequeDate']?.errors?.['required']">
+                Cheque Date is required, please fill.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label class="custom-label-field">Bank <span class="text-danger"> *</span></label>
+            <ng-select name="BankId" id="BankId" placeholder="Search for account" [items]="bankList"
+              bindLabel="bankName" bindValue="id" formControlName="BankId">
+            </ng-select>
+            <div *ngIf="submitted && formValid['BankId']?.invalid" class="ng-dirty text-danger">
+              <span *ngIf="formValid['BankId']?.errors">
+                <span class="error">Bank is required, please select</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-md-3 ">
+          <div class="form-group overflow-hidden position-relative">
+            <label class="custom-label-field">Cheque drawer name <span class="text-danger"> *</span></label>
+            <input formControlName="ChequeCustomer" alphabetOnly name="ChequeCustomer" type="text"
+              class="form-control custom-input-field" placeholder="Type name" autocomplete="off" trimOnBlurInput
+              required minlength="6" maxlength="30" />
+            <button class="btn btn-remove" type="button" *ngIf="form.get('ChequeCustomer')?.value"
+              (click)="remove('ChequeCustomer')">
+              <fa-icon [icon]="faXmark"></fa-icon>
+            </button>
+            <div *ngIf="submitted && formValid['ChequeCustomer']?.invalid" class="ng-dirty text-danger">
+              <span class="error" *ngIf="formValid['ChequeCustomer']?.errors?.['required']">
+                Cheque Name is required, please fill.</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" style="padding-top: 35px">
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="Customer" value="Customer" formControlName="Customer"
+              (click)="sameCustomer()" />
+            <label class="form-check-label" for="indoor"> Same Customer </label>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6">
+          <div class="form-group overflow-hidden position-relative">
+            <label class="custom-label-field">Upload Bank Logo <span class="text-danger"> *</span></label>
+            <div class="col-lg-12 ">
+              <div class="file-uploader" (click)="galleryImage.click()">
+                <img class="mb-3" src="assets/images/uploader.png" />
+                <h4>
+                  Drag & drop files
+                </h4>
+                <input #galleryImage type="file" accept="image/*" style="display:none"
+                  (change)="onFileSelected($event)">
+                <p>Supported formats: JPEG, PNG, PDF</p>
+              </div>
+              <div *ngIf="filesToUpload.length > 0">
+                <h5>Selected Files:</h5>
+                <ul>
+                  <li *ngFor="let file of filesToUpload">{{ file.name }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2">
+          <button class="btn btn-add " type="button">
+            Upload
+          </button>
+        </div>
+      </div>
+
+      <div class="col-md-12 mt-3">
+        <div class="form-group">
+          <label class="custom-label-field">Add Note <span class="text-danger"> *</span></label>
+          <!-- <textarea formControlName="Note" name="Note" minlength="2" maxlength="30"
+            style="min-height: 10rem !important;" class="form-control custom-input-field texarea-height"
+            autocomplete="off" trimOnBlurInput></textarea> -->
+          <textarea rows="5" [appMaxCharacters]="200" class="form-control" formControlName="Note"></textarea>
+          <div class="text-danger">
+            <div *ngIf="form.get('Note')?.errors?.['maxlength'] && ( form.get('Note')?.invalid || submitted)">
+              Maximum character limit exceeded ({{
+              form.get('Note')?.errors?.['maxlength']?.requiredLength }} characters allowed)
+            </div>
+            <div
+              *ngIf="(form.get('Note')?.invalid && (form.get('Note')?.touched || submitted)) || (!form.get('Note')?.value && submitted)">
+              <div *ngIf="formControls['Note'].errors?.['required']">
+                This field is required.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="btns-group">
+          <button type="button" class="btn btn-cancel" (click)="close()">Close</button>
+          <button type="submit" class="btn btn-save">
+            Confirm
+          </button>
+          <button type="button" class="btn btn-save btn-load" *ngIf="loading" disabled>
+            <fa-icon [icon]="faCircleNotch" [spin]="true"></fa-icon>
+          </button>
+        </div>
+      </div>
+      <div class="alert alert-danger text-center mt-3 mb-3 my-2" role="alert" *ngIf="messageError">
+        {{ messageError }}
+      </div>
+    </div>
+  </form>
+</div>
+
+<app-loading *ngIf="isLoading"></app-loading>
+
+<div *ngIf="message" class="modal-body">
+  <div class="message">
+    <h5><i class="fa-regular fa-circle-check"></i> {{ message }}</h5>
+  </div>
+</div>
