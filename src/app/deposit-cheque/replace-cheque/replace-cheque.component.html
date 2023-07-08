@@ -3,9 +3,11 @@
     <h5>
       Replace Cheque <br><span class="heading-break">You are about to Replace the following Cheque</span>
     </h5>
-    <p class="btn-Returned">
-      Returned
-    </p>
+    <span class="text-end" *ngIf="details">
+      <p class="collected-btn" [style.color]="details?.statusObj?.lookupTextColor"
+        [style.background-color]="details?.statusObj?.lookupBGColor">
+        {{details?.statusObj?.translations?.[0].lookupName}} </p>
+    </span>
   </div>
   <div class="cr-card">
     <div class="card-head">
