@@ -8,12 +8,12 @@ import { SidebarService } from '../shared/services/sidebar.service';
   styleUrls: ['./deposit-cheque.component.scss']
 })
 export class DepositChequeComponent implements OnInit, OnDestroy {
-  selecteddeposit: any = 1;
+  
   depositTypes: any = [];
   totalAllRecordsCount = 0;
 
   constructor(
-    private headerService: HeaderService,
+    public headerService: HeaderService,
     private sidebarService: SidebarService,
   ) { }
 
@@ -29,7 +29,7 @@ export class DepositChequeComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
   chooseDeposit(deposit: any) {
-    this.selecteddeposit = deposit.id;
+    this.headerService.selecteddeposit = deposit.id;
   }
   getdepositTypes() {
     this.depositTypes = [

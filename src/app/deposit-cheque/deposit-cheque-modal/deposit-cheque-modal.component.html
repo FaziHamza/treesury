@@ -9,7 +9,7 @@
         <h5>
           {{title}}
         </h5>
-        <p>You are about to replace the following cheque</p>
+        <p>You are about to bounce the following cheque</p>
       </div>
       <!-- <p>You are about to return the following cheque</p> -->
       <span class="text-end" *ngIf="!isConfirmShow">
@@ -79,14 +79,14 @@
             <p *ngIf="!details?.chequeDate">---</p>
           </div>
           <div class="col-lg-2">
-            <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod}}</p>
+            <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod | number:".3"}} JOD</p>
             <p *ngIf="!details?.chequeCollectionJod">---</p>
           </div>
         </div>
       </div>
     </div>
     <div class="detail-content" *ngIf="detailShow">
-      <p>Added Note:</p>
+      <p>Add Note:</p>
       <textarea rows="5" [appMaxCharacters]="200" class="form-control" formControlName="note"></textarea>
       <div class="text-danger">
         <div

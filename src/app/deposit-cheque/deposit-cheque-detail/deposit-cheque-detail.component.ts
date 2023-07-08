@@ -38,7 +38,7 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
     })
   }
   ngOnDestroy() {
-
+    this.headerService.selecteddeposit =2;
   }
   getDepositDetail() {
     this.loading = true;

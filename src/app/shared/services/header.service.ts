@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class HeaderService {
+  selecteddeposit: any = 1;
   titleSubject = new BehaviorSubject<string>('');
 
   setTitle(title: string) {

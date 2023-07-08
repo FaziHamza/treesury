@@ -3,19 +3,19 @@
         <div class="col-md-9">
             <div class="btn-tabs">
                 <button type="button" class="btn" *ngFor="let item of depositTypes"
-                    [class.active]="item.id === selecteddeposit" (click)="chooseDeposit(item)">
+                    [class.active]="item.id === headerService.selecteddeposit" (click)="chooseDeposit(item)">
                     {{ item.name}}
                 </button>
             </div>
         </div>
-        <div class="col-md-3" *ngIf="selecteddeposit == 2">
+        <div class="col-md-3" *ngIf="headerService.selecteddeposit == 2">
             <p class="total-amount">Total No. {{ totalAllRecordsCount }}</p>
         </div>
     </div>
-    <div class="row" *ngIf="selecteddeposit == 1">
+    <div class="row" *ngIf="headerService.selecteddeposit == 1">
       <app-cheque-dashboard></app-cheque-dashboard>
     </div>
-    <div class="row" *ngIf="selecteddeposit == 2">
+    <div class="row" *ngIf="headerService.selecteddeposit == 2">
       <app-cheque-list></app-cheque-list>
     </div>
 </div>

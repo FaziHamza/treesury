@@ -155,7 +155,7 @@
             <div *ngFor="let image of depositeDetail?.chequeImages; let i = index" class="carousel-item"
               [class.active]="i === 0">
              
-              <img [src]="this.imgUrl+image?.imagePath" class="d-block w-100" alt="...">
+              <img [src]="image?.imagePath" class="d-block w-100" alt="...">
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
