@@ -68,7 +68,7 @@
           <p *ngIf="!details?.chequeDate">---</p>
         </div>
         <div class="col-lg-2">
-          <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod}}</p>
+          <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod | number :'.3' }} JOD</p>
           <p *ngIf="!details?.chequeCollectionJod">---</p>
         </div>
       </div>
@@ -87,7 +87,7 @@
         <div class="col-md-3">
           <div class="form-group overflow-hidden position-relative">
             <label class="custom-label-field">Amount to Pay <span class="text-danger"> *</span></label>
-            <h6>{{details?.chequeCollectionJod}} JOD</h6>
+            <h6>{{details?.chequeCollectionJod | number :'.3'}} JOD</h6>
             <!-- <input formControlName="ChequeId" name="ChequeId" type="hidden" /> -->
             <!-- <input formControlName="ChequeAmount" [disabled]="true" name="ChequeAmount" type="number"
                         class="form-control custom-input-field" placeholder="Enter Amount" required /> -->
@@ -110,7 +110,7 @@
             </button>
             <div *ngIf="submitted && formValid['ChequeNo']?.invalid" class="ng-dirty text-danger">
               <span class="error" *ngIf="formValid['ChequeNo']?.errors?.['required']">
-                Cheque Number is required, please fill.</span>
+                This is required.</span>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
             </button>
             <div *ngIf="submitted && formValid['ChequeDate']?.invalid" class="ng-dirty text-danger">
               <span class="error" *ngIf="formValid['ChequeDate']?.errors?.['required']">
-                Cheque Date is required, please fill.</span>
+                This is required.</span>
             </div>
           </div>
         </div>
@@ -158,7 +158,7 @@
             </button>
             <div *ngIf="submitted && formValid['ChequeCustomer']?.invalid" class="ng-dirty text-danger">
               <span class="error" *ngIf="formValid['ChequeCustomer']?.errors?.['required']">
-                Cheque Name is required, please fill.</span>
+                This is required.</span>
             </div>
           </div>
         </div>

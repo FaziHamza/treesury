@@ -7,6 +7,7 @@ import { ReplaceChequeComponent } from '../replace-cheque/replace-cheque.compone
 import { ReplacedChequeDetailViewComponent } from '../cheque-dashboard/replaced-cheque-detail-view/replaced-cheque-detail-view.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderService } from 'src/app/shared/services/header.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-deposit-cheque-detail',
@@ -17,6 +18,7 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
   current = 0;
   id: any;
   loading = false;
+  imgUrl:any="";
   depositeDetail: any;
   steps: any[] = [];
   actionList: any[] = [];
@@ -25,6 +27,7 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
   constructor(private activatedRoute: ActivatedRoute,   private headerService: HeaderService,
     private modalService: NgbModal, private depositservice: DepositService) { }
   ngOnInit() {
+    this.imgUrl=environment.imgUrl;
     this.headerService.setTitle('Deposited Cheques > Cheques List > Deposited Cheque Details ');
     this.activatedRoute.params.subscribe(res => {
       if (res) {

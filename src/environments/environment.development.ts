@@ -2,6 +2,7 @@ export const environment = {
   production: false,
   apiUrl: 'https://dx-admimistrationstage.azurewebsites.net/POSAPI/api',
   apiUrl2: 'https://treasury-dx-be-stage.azurewebsites.net/api',
+  imgUrl: 'https://treasury-dx-be-stage.azurewebsites.net/',
   allowedDomains: ['dx-admimistrationstage.azurewebsites.net'],
   portalUrl: 'https://dx-portalsstage.azurewebsites.net/login',
   version: '1.0.0',

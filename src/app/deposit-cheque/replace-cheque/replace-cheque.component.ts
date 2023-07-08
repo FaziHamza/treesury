@@ -41,7 +41,7 @@ export class ReplaceChequeComponent {
     this.form = this.fb.group({
       ChequeNo: ['', [Validators.required]],
       ChequeDate: ['', [Validators.required]],
-      BankId: ["", [Validators.required]],
+      BankId: [null, [Validators.required]],
       ChequeCustomer: ['', [Validators.required]],
       Customer: false,
       Note: ['', [Validators.required, Validators.maxLength(200)]],
@@ -121,18 +121,19 @@ export class ReplaceChequeComponent {
         }
         const fromDate = new Date(this.form.value.ChequeDate);
         const formattedFromDate = fromDate.toISOString();
-        formData.append('DepositedChequeId ', this.details.id);
-        formData.append('ActionId', this.actionType.id);
-        formData.append('ChequeAmount', this.details?.chequeCollectionJod);
-        formData.append('ReplacedCheque.ChequeNo', this.form.value.ChequeNo);
-        formData.append('ReplacedCheque.ChequeDate', formattedFromDate);
-        formData.append('ReplacedCheque.BankId', this.form.value.BankId);
-        formData.append('ReplacedCheque.ChequeCustomer', this.form.value.ChequeCustomer);
+        formData.append('DepositedChequeId', this.details.id.toString());
+        formData.append('ActionId', this.actionType.id.toString());
+        formData.append('ChequeAmount', this.details?.chequeCollectionJod.toString());
+        formData.append('ChequeNo', this.form.value.ChequeNo.toString());
+        formData.append('ChequeDate', formattedFromDate);
+        formData.append('BankId', this.form.value.BankId.toString());
+        formData.append('ChequeCustomer', this.form.value.ChequeCustomer);
         this.depositservice.actionOnCheques(formData)
           .subscribe({
             next: response => {
               if (response.isSuccess) {
-                this.toastrService.success('New branch added successfully');
+                this.toastrService.success('Action Successfully Taken');
+                 this.close();
               } else {
                 const errorsList = response?.errors;
                 this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {
@@ -152,8 +153,8 @@ export class ReplaceChequeComponent {
         this.toastrService.error('please Upload Image');
       }
     }
-    // this.sendtoLoadData.emit();
   }
+
   get formControls() {
     return this.form.controls;
   }

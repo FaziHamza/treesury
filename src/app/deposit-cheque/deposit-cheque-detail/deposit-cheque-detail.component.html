@@ -129,8 +129,12 @@
 
       <div class="wizard-content">
         <div class="top-heading">
-          <h5>V1 Cheque Image</h5>
-          <p class="btn-light collected-btn">{{depositeDetail && depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</p>
+          <h5>V1 Cheque Image </h5>
+          <p 
+          class="btn"
+          [style.color]="depositeDetail?.statusObj?.lookupTextColor"
+          [style.background-color]="depositeDetail?.statusObj?.lookupBGColor"
+          >{{depositeDetail && depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</p>
         </div>
         <div class="no-image-display" *ngIf="depositeDetail?.chequeImages.length == 0">
           <img
@@ -147,9 +151,11 @@
               [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i+1)"></button>
           </div>
           <div class="carousel-inner">
+           
             <div *ngFor="let image of depositeDetail?.chequeImages; let i = index" class="carousel-item"
               [class.active]="i === 0">
-              <img [src]="image" class="d-block w-100" alt="...">
+             
+              <img [src]="this.imgUrl+image?.imagePath" class="d-block w-100" alt="...">
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -194,7 +200,9 @@
             <div class="col-2"><b>Time: </b><span>{{item.createdAt | date : 'hh:mm'}}</span> </div>
             <div class="col-2"><b>By: </b><span>{{item?.createdBy?.fullName}}</span> </div>
             <div class="col-2"><b>Role: </b><span>{{item?.role.name}}</span> </div>
-            <div class="col-3"><b>Action: </b><span>{{item?.action?.[0]?.lookupName}}</span> </div>
+            <!-- <div class="col-3"><b>Action: </b><span>{{item?.createdBy?.fullName }} marked the cheque as a  {{item?.action?.[0]?.lookupName}}</span> </div> -->
+            <div class="col-3"><b>Action: </b><span>{{item?.actionDetails}} </span> </div>
+
           </div>
         </div>
       </div>

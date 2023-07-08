@@ -378,8 +378,12 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.detailShow = detailShow;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
+      debugger
       console.log('resendtoLoadDatasult', result);
+      this.ngOnInit();
       this.modalService.dismissAll();
+
+ 
       // this.getList();
     });
   }
@@ -393,7 +397,10 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.details = detail;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
+      debugger
       console.log('resendtoLoadDatasult', result);
+      
+      this.ngOnInit();
       this.modalService.dismissAll();
       // this.getList();
     });

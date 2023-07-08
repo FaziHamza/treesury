@@ -173,10 +173,10 @@
   <!-- Table -->
   <div class="row mt-3">
     <div class="col-md-12">
-      <app-table-advanced [config]="tableConfig" [columns]="tableColumns" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading"
+      <app-table-advanced style="cursor: pointer;" [config]="tableConfig" [columns]="tableColumns" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading"
         [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
         (pageUpdated)="onPageChange($event)">
-        <ng-template libTableAdvancedColumn="customerName" let-row="row">
+        <ng-template  libTableAdvancedColumn="customerName" let-row="row">
           {{ row.customer?.customerName}}
         </ng-template>
         <ng-template libTableAdvancedColumn="chequeCollectionJod" let-row="row">

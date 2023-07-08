@@ -67,6 +67,8 @@ export class DepositChequeModalComponent {
         next: response => {
           if (response.isSuccess) {
             this.toastrService.success('Action Successfully Taken');
+            // this.dismissModal();
+            this.submit();
           } else {
             const errorsList = response?.errors;
             this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {
@@ -84,4 +86,4 @@ export class DepositChequeModalComponent {
       .add(() => (this.isLoading = false));
   }
 }
-0
+
