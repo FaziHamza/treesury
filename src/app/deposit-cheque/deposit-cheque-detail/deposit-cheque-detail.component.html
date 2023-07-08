@@ -127,7 +127,7 @@
     </div>
     <div class="cr-card">
 
-      <div class="wizard-content">
+      <div class="wizard-content banner-slider">
         <div class="top-heading">
           <h5>V1 Cheque Image </h5>
           <p 
@@ -143,7 +143,7 @@
           <h3 class="text-center">No Image to display</h3>
         </div>
 
-        <div *ngIf="depositeDetail?.chequeImages.length > 0" class="banner-slider" id="carouselExampleIndicators"
+        <div *ngIf="depositeDetail?.chequeImages.length > 0"  id="carouselExampleIndicators"
           class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button *ngFor="let image of depositeDetail?.chequeImages; let i = index" type="button"

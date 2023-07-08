@@ -170,7 +170,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-3">
+      <div class="row mt-2">
         <div class="col-md-6">
           <div class="form-group overflow-hidden position-relative">
             <label class="custom-label-field">Upload Bank Logo <span class="text-danger"> *</span></label>
@@ -208,7 +208,7 @@
           <!-- <textarea formControlName="Note" name="Note" minlength="2" maxlength="30"
             style="min-height: 10rem !important;" class="form-control custom-input-field texarea-height"
             autocomplete="off" trimOnBlurInput></textarea> -->
-          <textarea rows="5" [appMaxCharacters]="200" class="form-control" formControlName="Note"></textarea>
+          <textarea rows="3" [appMaxCharacters]="200" class="form-control" formControlName="Note"></textarea>
           <div class="text-danger">
             <div *ngIf="form.get('Note')?.errors?.['maxlength'] && ( form.get('Note')?.invalid || submitted)">
               Maximum character limit exceeded ({{

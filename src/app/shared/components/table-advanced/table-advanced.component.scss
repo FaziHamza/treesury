@@ -23,10 +23,11 @@
 
       th {
         color: var(--#{$prefix}heading-color-300);
-        font-size: 0.875rem;
+        font-size: 13px;
+
         font-family: 'KumbhSans-SemiBold', sans-serif;
         vertical-align: middle;
-        padding: 10px 15px;
+        padding: 8px 5px;
 
         .btn {
           display: flex;
@@ -53,10 +54,10 @@
       tr {
         td {
           font-family: 'KumbhSans-SemiBold', sans-serif;
-          font-size: 0.875rem;
+          font-size: 13px;
           vertical-align: middle;
           color: var(--#{$prefix}heading-color-300);
-          padding: 10px 5px 10px 25px;
+          padding: 8px 5px 8px 15px;
         }
 
         &:hover {
@@ -179,7 +180,7 @@
 
 tfoot {
   background-color: #f0f0f0;
- 
+
 }
 
 tfoot tr {
