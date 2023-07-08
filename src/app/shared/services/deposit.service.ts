@@ -14,7 +14,7 @@ import urlJoin from "url-join";
 export class DepositService {
   constructor(private http: HttpClient) {}
     getDepositCheques(filter: any): Observable<ApiResponse> {
-      debugger
+
       const headers = {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };
@@ -24,7 +24,7 @@ export class DepositService {
       );
     }
     getPermissions(id: any): Observable<ApiResponse> {
-      debugger
+
       const headers = {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };
@@ -33,7 +33,7 @@ export class DepositService {
       );
     }
     getLookups(id: any): Observable<ApiResponse> {
-      debugger
+
       const headers = {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };
@@ -42,7 +42,7 @@ export class DepositService {
       );
     }
     getChequesActionsLog(id: any): Observable<ApiResponse> {
-      debugger
+
       const headers = {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };

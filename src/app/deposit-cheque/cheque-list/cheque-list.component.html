@@ -194,7 +194,7 @@
           [style.background-color]="row?.statusObj?.lookupBGColor" > {{row?.statusObj?.translations?.[0].lookupName}} </p>
         </ng-template>
         <ng-template libTableAdvancedColumn="action" let-row="row"st >
-          <div class="dropdown" style="position: absolute !important; margin-top: -15px;" *ngIf="row?.statusObj?.translations?.[0]?.lookupName != 'Collected'">
+          <div class="dropdown" style="position: absolute !important; margin-top: -15px;" [ngClass]="{'disabled': row?.statusObj?.translations?.[0]?.lookupName == 'Collected'}" >
             <div class="btn dropdownButton"
                     id="dropdownMenuButton1"
                     data-bs-toggle="dropdown"
@@ -203,7 +203,7 @@
             </div>
             <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton1">
               <li *ngIf="row?.statusObj?.translations?.[0]?.lookupName == 'Deposited'
-              || row?.statusObj?.translations?.[0]?.lookupName == 'Re-deposited'
+              || row?.statusObj?.translations?.[0]?.lookupName == 'Re-deposited'|| row?.statusObj?.translations?.[0]?.lookupName == 'Re-deposit'
               || row?.statusObj?.translations?.[0]?.lookupName == 'Replaced';else secondBlock">
                 <a class="dropdown-item" (click)="depositDetail(item,row)" *ngFor="let item of firstActionList" >
                  {{ item?.name?.[0].lookupName}}

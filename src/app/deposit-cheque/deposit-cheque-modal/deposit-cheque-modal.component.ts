@@ -42,7 +42,7 @@ export class DepositChequeModalComponent {
     return this.reasonForm.controls;
   }
   saveForm() {
-    debugger
+
     if (this.isConfirmShow) {
       this.saveSubmitted = true;
       let formData = new FormData();
@@ -58,9 +58,9 @@ export class DepositChequeModalComponent {
       }
     }
   }
-  
-  
-  
+
+
+
   submitData(formData: any) {
     this.deposiService.actionOnCheques(formData)
       .subscribe({

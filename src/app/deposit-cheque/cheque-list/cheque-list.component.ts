@@ -89,7 +89,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       })
       .add(() => (this.loading = false));
   }
-  
+
   onSortChange(sort: any) {
     if (sort?.direction && sort?.column) {
       switch (sort.column) {
@@ -232,6 +232,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     const api3$ = this.depositservice.getLookups(29);
     forkJoin([api1$, api2$, api3$]).subscribe(
       ([result1, result2, result3]) => {
+
         if (result1) {
           this.banksList = result1.data || [];
         }
@@ -258,8 +259,8 @@ export class ChequeListComponent implements OnInit, OnDestroy {
 
   makeActionList(){
     // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Multi select"];
-    const secondArrayLookupNames = ["Re-deposited", "Replace"];
+    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
+    const secondArrayLookupNames = ["Re-deposit", "Replace"];
    this.firstActionList =  this.actionList.filter(item =>
       firstArrayLookupNames.includes(item.name[0]?.lookupName)
     );
@@ -275,9 +276,9 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       this.openModalTrigger(item,row,'Bounced Cheque Details View',true,true)
     else if(item?.name?.[0].lookupName == 'Replace')
       this.replace(item,row)
-    else if(item?.name?.[0].lookupName == 'Re-deposited')
+    else if(item?.name?.[0].lookupName == 'Re-deposit')
       this.openModalTrigger(item,row,'Re-deposited Cheque Details View',true,true)
-    else if(item?.name?.[0].lookupName == 'Multi select')
+    else if(item?.name?.[0].lookupName == 'Collect')
       this.openModalTrigger(item,row,'Collected Cheque Details View',false,false)
     else if(item?.name?.[0].lookupName == 'replace-view')
       this.replaceView()
@@ -289,7 +290,10 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   removebankFilter() {
     this.newDropdownbank = [];
     this.dropDownbankId = [];
+    delete this.tableConfig.filter.BankId;
     this.bank = false;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
 
@@ -297,6 +301,8 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.collectionDate = false;
     delete this.tableConfig.filter.FromDate;
     delete this.tableConfig.filter.ToDate;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
 
@@ -304,6 +310,8 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.dueDate = false;
     delete this.tableConfig.filter.FromDueDate;
     delete this.tableConfig.filter.ToDueDate;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
   dropDownbankId: any[] = [];
@@ -325,6 +333,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       );
     }
     this.tableConfig.filter.BankId = this.dropDownbankId;
+    this.page = 1;
     this.fetchData();
   }
 
@@ -334,6 +343,8 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     let endDate = pipe.transform(event[1]) || '';
     this.tableConfig.filter.FromDate = startDate;
     this.tableConfig.filter.ToDate = endDate;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
 
@@ -343,11 +354,15 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     let endDate = pipe.transform(event[1]) || '';
     this.tableConfig.filter.FromDueDate = startDate;
     this.tableConfig.filter.ToDueDate = endDate;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
 
   IsPDCFilter(IsPDC: any) {
     this.tableConfig.filter.IsPDC = IsPDC;
+    this.page = 1;
+    this.sort = 1;
     this.fetchData();
   }
 

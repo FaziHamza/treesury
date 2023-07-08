@@ -21,7 +21,7 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.pipe(takeUntil(this.unsubscribe)).subscribe(params => {
-      debugger
+
       if (params?.['token']) {
         this.tokenService.setToken(params['token']);
         this.router.navigate(['/']);

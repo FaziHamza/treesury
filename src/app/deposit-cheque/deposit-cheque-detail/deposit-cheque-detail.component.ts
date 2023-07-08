@@ -87,8 +87,8 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
   secondActionList :any[] = [];
   makeActionList(){
     // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Multi select"];
-    const secondArrayLookupNames = ["Re-deposited", "Replace"];
+    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
+    const secondArrayLookupNames = ["Re-deposit", "Replace"];
    this.firstActionList =  this.actionList.filter(item =>
       firstArrayLookupNames.includes(item.name[0]?.lookupName)
     );
@@ -103,9 +103,9 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
       this.openModalTrigger(item,'Bounce Cheque', true, true)
     else if (item?.name?.[0].lookupName == 'Replace')
     this.replace(item)
-    else if (item?.name?.[0].lookupName == 'Re-deposited')
+    else if (item?.name?.[0].lookupName == 'Re-deposit')
       this.openModalTrigger(item,'Re-deposited Cheque', true, true)
-    else if (item?.name?.[0].lookupName == 'Multi select')
+    else if (item?.name?.[0].lookupName == 'Collect')
       this.openModalTrigger(item,'Collect Cheque', true, false)
     else if (item?.name?.[0].lookupName == 'replace-view')
       this.replaceView()
