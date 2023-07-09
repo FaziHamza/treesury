@@ -8,19 +8,20 @@
         aria-expanded="false">
         <i class="fa-solid fa-ellipsis"></i>
       </div>
-      <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton1" >
+      <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton1">
         <li *ngIf="depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Deposited'
         || depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Re-deposited'
         || depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Replaced';else secondBlock">
-          <a class="dropdown-item" (click)="depositDetail(item)" *ngFor="let item of firstActionList" >
-           {{ item?.name?.[0].lookupName}}
+          <a class="dropdown-item" (click)="depositDetail(item)" *ngFor="let item of firstActionList">
+            {{ item?.name?.[0].lookupName}}
           </a>
         </li>
 
         <ng-template #secondBlock>
-          <li *ngIf="depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Returned' || depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Bounced';else thirdBlock">
-            <a class="dropdown-item" (click)="depositDetail(item)" *ngFor="let item of secondActionList" >
-             {{ item?.name?.[0].lookupName}}
+          <li
+            *ngIf="depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Returned' || depositeDetail?.statusObj?.translations?.[0]?.lookupName == 'Bounced';else thirdBlock">
+            <a class="dropdown-item" (click)="depositDetail(item)" *ngFor="let item of secondActionList">
+              {{ item?.name?.[0].lookupName}}
             </a>
           </li>
         </ng-template>
@@ -116,12 +117,14 @@
       <div class="wizard-form wizard-form2">
         <ul id="progressBar" class="progressbar">
           <li *ngFor="let step of steps; let i = index" [id]="'progressList-' + (i+1)"
-            [ngStyle]="{'background-image': 'url(' + step?.imagePath + ')'}"
             class="d-inline-block fw-bold position-relative text-center float-start progressbar-list"
             [ngClass]="{'active': step.id == depositeDetail?.statusObj?.lookupId}">
+            <span class="step-image" [style.backgroundImage]="'url(' + step?.imagePath + ')'" [style.backgroundRepeat]="'no-repeat'" [style.backgroundSize]="'contain'"></span>
             {{step?.name?.[0].lookupName}}
           </li>
         </ul>
+        
+
 
       </div>
     </div>
@@ -130,11 +133,9 @@
       <div class="wizard-content banner-slider">
         <div class="top-heading">
           <h5>V1 Cheque Image </h5>
-          <p 
-          class="btn"
-          [style.color]="depositeDetail?.statusObj?.lookupTextColor"
-          [style.background-color]="depositeDetail?.statusObj?.lookupBGColor"
-          >{{depositeDetail && depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</p>
+          <p class="btn" [style.color]="depositeDetail?.statusObj?.lookupTextColor"
+            [style.background-color]="depositeDetail?.statusObj?.lookupBGColor">{{depositeDetail &&
+            depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</p>
         </div>
         <div class="no-image-display" *ngIf="depositeDetail?.chequeImages.length == 0">
           <img
@@ -143,18 +144,18 @@
           <h3 class="text-center">No Image to display</h3>
         </div>
 
-        <div *ngIf="depositeDetail?.chequeImages.length > 0"  id="carouselExampleIndicators"
-          class="carousel slide" data-bs-ride="carousel">
+        <div *ngIf="depositeDetail?.chequeImages.length > 0" id="carouselExampleIndicators" class="carousel slide"
+          data-bs-ride="carousel">
           <div class="carousel-indicators">
             <button *ngFor="let image of depositeDetail?.chequeImages; let i = index" type="button"
               data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
               [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i+1)"></button>
           </div>
           <div class="carousel-inner">
-           
+
             <div *ngFor="let image of depositeDetail?.chequeImages; let i = index" class="carousel-item"
               [class.active]="i === 0">
-             
+
               <img [src]="image?.imagePath" class="d-block w-100" alt="...">
             </div>
           </div>
@@ -206,7 +207,8 @@
           </div>
         </div>
       </div>
-      <div class="flex-end-row mt-2 mb-2" *ngIf="activityLog.length == 1 && masterActivityLog.length > 1 " (click)="viewMore()">
+      <div class="flex-end-row mt-2 mb-2" *ngIf="activityLog.length == 1 && masterActivityLog.length > 1 "
+        (click)="viewMore()">
         <div class="text-end view-more">
           <a class="hand-cursor"> View More -</a>
         </div>

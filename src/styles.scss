@@ -588,7 +588,17 @@ input.form-control:focus {
   background-position: center;
   background-size: 24px;
   background-repeat: no-repeat;
-  // background-image: url(../src/assets/images/1.png);
+  // background-image: url('https://dx-admimistrationstage.azurewebsites.net/POSAPI/Uploads/Lookups/Returned.png');
+}
+
+.progressbar-list .step-image {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 17px;
+  left: 69px;
+  width: 30px;
+  height: 23px;
 }
 
 .wizard-form-body .main-content .wizard-form2 .progressbar-list:nth-child(2):before {
