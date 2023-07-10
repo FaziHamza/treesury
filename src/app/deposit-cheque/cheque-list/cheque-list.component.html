@@ -176,8 +176,14 @@
       <app-table-advanced style="cursor: pointer;" [config]="tableConfig" [columns]="tableColumns" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading"
         [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
         (pageUpdated)="onPageChange($event)">
+        <ng-template  libTableAdvancedColumn="chequeNo" let-row="row">
+          {{ row?.chequeNo}}
+        </ng-template>
         <ng-template  libTableAdvancedColumn="customerName" let-row="row">
           {{ row.customer?.customerName}}
+        </ng-template>
+        <ng-template  libTableAdvancedColumn="bank" let-row="row">
+          {{ row.bank}}
         </ng-template>
         <ng-template libTableAdvancedColumn="chequeCollectionJod" let-row="row">
           {{ row.chequeCollectionJod}} JOD

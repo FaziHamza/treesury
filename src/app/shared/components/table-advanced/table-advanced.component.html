@@ -33,7 +33,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let item of tempData; let i = index">
+        <tr *ngFor="let item of tempData; let i = index" [ngClass]="{'highlight-row' : item.isCollectedInPast}">
           <td *ngFor="let column of columns" (click)="gotoPage(item.id, column)">
             <ng-template #oldContainer>
               <ng-container *ngTemplateOutlet="

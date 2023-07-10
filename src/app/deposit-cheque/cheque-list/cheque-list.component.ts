@@ -82,7 +82,8 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       .getDepositCheques(this.tableConfig.filter)
       .subscribe(result => {
         if (result) {
-          this.deposites = result.data || []
+          this.makeListData(result.data || []);
+
           this.totalAllRecordsCount = result?.totalRecordCount;
           this.total = result?.totalRecordCount;
         }
@@ -234,7 +235,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       ([result1, result2, result3]) => {
 
         if (result1) {
-          this.banksList = result1.data || [];
+          this.banksList = result1.data || []
         }
         console.log("ss",result2)
         if (result2) {
@@ -256,7 +257,22 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   }
   firstActionList :any[] = [];
   secondActionList :any[] = [];
+  makeListData(data:any){
+    const updatedData = data.map((item:any) => {
+      const collectedAtDate = new Date(item.collectedAt);
+      const currentDate = new Date();
 
+      const isCollectedInPast = collectedAtDate < currentDate && item.statusObj?.translations?.[0]?.lookupName != 'Collected';
+
+      return {
+        ...item,
+        isCollectedInPast: isCollectedInPast
+      };
+    });
+    debugger
+    this.deposites = updatedData;
+
+  }
   makeActionList(){
     // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
     const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
@@ -383,7 +399,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       this.ngOnInit();
       this.modalService.dismissAll();
 
- 
+
       // this.getList();
     });
   }
@@ -399,7 +415,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
       debugger
       console.log('resendtoLoadDatasult', result);
-      
+
       this.ngOnInit();
       this.modalService.dismissAll();
       // this.getList();

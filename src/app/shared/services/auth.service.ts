@@ -44,6 +44,11 @@ export class AuthService {
     }
     localStorage.removeItem('token');
     sessionStorage.removeItem('token');
-    window.location.href = environment.portalUrl;
+    if(environment.apiUrl2.includes('test')){
+      window.location.href ='https://dx-portalstest.azurewebsites.net/login';
+    }else{
+      window.location.href ='https://dx-portalsstage.azurewebsites.net/login';
+    }
+    // window.location.href = environment.portalUrl;
   }
 }
