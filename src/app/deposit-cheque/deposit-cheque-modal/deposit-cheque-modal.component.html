@@ -101,17 +101,18 @@
           </div>
         </div>
       </div>
-      <div class="btns-group">
-        <button type="button" (click)="dismissModal()" class="btn btn-cancel">
-          Close
-        </button>
-        <button type="submit" class="btn btn-save" *ngIf="isConfirmShow">
-          Confirm
-        </button>
-      </div>
+     
       <div class="alert alert-danger text-center mt-3 mb-3 my-2" role="alert" *ngIf="messageError">
         {{ messageError }}
       </div>
+    </div>
+    <div class="btns-group">
+      <button type="button" (click)="dismissModal()" class="btn btn-cancel">
+        Close
+      </button>
+      <button type="submit" class="btn btn-save" *ngIf="isConfirmShow">
+        Confirm
+      </button>
     </div>
   </form>
 </div>

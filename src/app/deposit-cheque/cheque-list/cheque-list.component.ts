@@ -279,7 +279,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     else if(item?.name?.[0].lookupName == 'Re-deposit')
       this.openModalTrigger(item,row,'Re-deposited Cheque Details View',true,true)
     else if(item?.name?.[0].lookupName == 'Collect')
-      this.openModalTrigger(item,row,'Collected Cheque Details View',false,false)
+      this.openModalTrigger(item,row,'Collect Cheque',true,false)
     else if(item?.name?.[0].lookupName == 'replace-view')
       this.replaceView()
   }
