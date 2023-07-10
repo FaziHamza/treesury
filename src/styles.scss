@@ -353,7 +353,6 @@ input.form-control:focus {
   padding: 15px;
   overflow: hidden;
 
-
   .card-head {
     padding: 10px 15px;
     background: #f8f8f8;
@@ -592,13 +591,18 @@ input.form-control:focus {
 }
 
 .progressbar-list .step-image {
-  content: "";
-  display: block;
   position: absolute;
+  content: "";
   top: 17px;
-  left: 69px;
-  width: 30px;
-  height: 23px;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  span {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .wizard-form-body .main-content .wizard-form2 .progressbar-list:nth-child(2):before {
@@ -1055,7 +1059,6 @@ input.form-control:focus {
   cursor: pointer;
 }
 
-
 .no-image-display {
   height: 300px;
   display: flex;
@@ -1110,7 +1113,7 @@ input.form-control:focus {
   border-radius: 4px;
   border: none;
   cursor: pointer;
-  background: var(--grey-text, #8990A3);
+  background: var(--grey-text, #8990a3);
 
   i {
     color: white;
@@ -1120,10 +1123,6 @@ input.form-control:focus {
 a {
   cursor: pointer;
 }
-
-
-
-
 
 .table-advanced {
   overflow: revert !important;
@@ -1144,7 +1143,6 @@ table {
     }
   }
 }
-
 
 .form-check-input:checked {
   background-color: #dc3545;

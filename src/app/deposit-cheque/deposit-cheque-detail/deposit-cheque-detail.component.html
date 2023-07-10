@@ -119,11 +119,14 @@
           <li *ngFor="let step of steps; let i = index" [id]="'progressList-' + (i+1)"
             class="d-inline-block fw-bold position-relative text-center float-start progressbar-list"
             [ngClass]="{'active': step.id == depositeDetail?.statusObj?.lookupId}">
-            <span class="step-image" [style.backgroundImage]="'url(' + step?.imagePath + ')'" [style.backgroundRepeat]="'no-repeat'" [style.backgroundSize]="'contain'"></span>
+            <div class="step-image">
+              <span [style.backgroundImage]="'url(' + step?.imagePath + ')'" [style.backgroundRepeat]="'no-repeat'"
+                [style.backgroundSize]="'contain'"></span>
+            </div>
             {{step?.name?.[0].lookupName}}
           </li>
         </ul>
-        
+
 
 
       </div>
