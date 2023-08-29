@@ -10,7 +10,7 @@ import { DepositService } from 'src/app/shared/services/deposit.service';
   styleUrls: ['./deposit-cheque-modal.component.scss']
 })
 export class DepositChequeModalComponent {
-  @Input() details: any;
+  @Input() details: any[] = [];
   @Input() actionType: any;
   @Input() title = '';
   @Input() isConfirmShow = false;
@@ -33,6 +33,9 @@ export class DepositChequeModalComponent {
   submit() {
     this.sendtoLoadData.emit();
   }
+  close() {
+    this.sendtoLoadData.emit('true');
+  }
   initForm() {
     this.reasonForm = this.formBuilder.group({
       note: ['', [Validators.required, Validators.maxLength(200)]],
@@ -45,17 +48,19 @@ export class DepositChequeModalComponent {
 
     if (this.isConfirmShow) {
       this.saveSubmitted = true;
-      let formData = new FormData();
-      formData.append('DepositedChequeId', this.details?.id.toString());
-      formData.append('ActionId', this.actionType.id.toString());
-      if (this.reasonForm.valid) {
-        this.isLoading = true;
-        formData.append('Notes', this.reasonForm.value.note);
-        this.submitData(formData);
-      }
-      if (!this.detailShow) {
-        this.submitData(formData);
-      }
+      this.details.forEach(element => {
+        let formData = new FormData();
+        formData.append('DepositedChequeId', element?.id.toString());
+        formData.append('ActionId', this.actionType.id.toString());
+        if (this.reasonForm.valid) {
+          this.isLoading = true;
+          formData.append('Notes', this.reasonForm.value.note);
+          this.submitData(formData);
+        }
+        if (!this.detailShow) {
+          this.submitData(formData);
+        }
+      });
     }
   }
 
@@ -68,7 +73,7 @@ export class DepositChequeModalComponent {
           if (response.isSuccess) {
             this.toastrService.success('Action Successfully Taken');
             // this.dismissModal();
-            this.submit();
+            this.close();
           } else {
             const errorsList = response?.errors;
             this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {

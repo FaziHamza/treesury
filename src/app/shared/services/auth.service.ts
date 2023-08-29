@@ -39,15 +39,19 @@ export class AuthService {
   }
 
   logout() {
-    if (this.userId) {
-      this.userService.logoutUser(this.userId).subscribe();
+    // if (this.userId) {
+    //   this.userService.logoutUser(this.userId).subscribe();
+    // }
+    // localStorage.removeItem('token');
+    // sessionStorage.removeItem('token');
+    if (environment.apiUrl2.includes('test')) {
+      window.location.href = 'https://dx-portalstest.azurewebsites.net/main-menu';
     }
-    localStorage.removeItem('token');
-    sessionStorage.removeItem('token');
-    if(environment.apiUrl2.includes('test')){
-      window.location.href ='https://dx-portalstest.azurewebsites.net/login';
-    }else{
-      window.location.href ='https://dx-portalsstage.azurewebsites.net/login';
+    else if (environment.apiUrl2.includes('dev')) {
+      window.location.href = 'https://portals-dx-fe-dev.azurewebsites.net/main-menu';
+    }
+    else {
+      window.location.href = 'https://dx-portalsstage.azurewebsites.net/main-menu';
     }
     // window.location.href = environment.portalUrl;
   }

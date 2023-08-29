@@ -26,6 +26,7 @@ import { Router } from '@angular/router';
 export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChanges {
   @Input() config: TableConfig = {};
   @Input() loading = false;
+  @Input() showMultiSelect = true;
   @Input() page: number = 1;
   @Input() pageCount: number = 1;
   @Input() limit: number = 6;
@@ -49,8 +50,8 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
   faArrowDownLong = faArrowDownLong;
   constructor(private router: Router) { }
   ngOnInit() {
-   
-    
+
+
     if (this.config.initSort) {
       this.sort = this.config.initSort;
     }
@@ -73,7 +74,7 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
     if (changes['tablefoot']) {
       this.temptablefoot = cloneDeep(this.tablefoot || []);
       console.log('  this.temptablefoot',  this.temptablefoot);
-      
+
     }
   }
 
@@ -116,7 +117,7 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
   }
   gotoPage(id: any, column: any) {
     if (this.link) {
-      if (column.key != 'action')
+      if (column.key != 'action' && column.key != 'select')
         this.router.navigate([this.link, id]);
     }
   }
@@ -147,7 +148,7 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
   }
 
   getfooterByKey(key: string) {
-    
+
     return this.columns.find(s => s.key === key);
   }
 }

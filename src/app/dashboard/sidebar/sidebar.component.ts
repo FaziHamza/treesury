@@ -55,10 +55,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.modalService.open(ModalLogoutComponent, { backdrop: 'static' }).result.then(result => {
-      if (result?.action) {
-        this.authService.logout();
-      }
-    });
+    this.authService.logout();
+    // this.modalService.open(ModalLogoutComponent, { backdrop: 'static' }).result.then(result => {
+    //   if (result?.action) {
+    //   }
+    // });
   }
 }

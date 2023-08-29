@@ -46,7 +46,7 @@ export class ReplaceChequeComponent {
       Customer: false,
       Note: ['', [Validators.required, Validators.maxLength(200)]],
     });
-    this.depositservice.getLookups(11).subscribe(response => {
+    this.depositservice.getBankLookups(11).subscribe(response => {
       this.makeBankList(response.data || [])
     });
 
@@ -133,7 +133,7 @@ export class ReplaceChequeComponent {
             next: response => {
               if (response.isSuccess) {
                 this.toastrService.success('Action Successfully Taken');
-                 this.close();
+                 this.sendtoLoadData.emit('true');
               } else {
                 const errorsList = response?.errors;
                 this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {

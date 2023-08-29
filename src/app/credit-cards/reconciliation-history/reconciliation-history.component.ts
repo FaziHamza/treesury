@@ -176,7 +176,12 @@ export class ReconciliationHistoryComponent {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
     console.log(this.startDate);
-    this.tableConfig.filter.ReconciliationDate = this.startDate;
+    if (this.startDate) {
+      const fromDate = new Date(this.startDate);
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.ReconciliationDate = formattedFromDate;
+    } else
+      this.tableConfig.filter.ReconciliationDate = this.startDate;
     this.GetReconciliationTable()
   }
 

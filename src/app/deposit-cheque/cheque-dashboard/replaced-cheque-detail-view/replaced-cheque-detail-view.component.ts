@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HeaderService } from 'src/app/shared/services/header.service';
 import { SidebarService } from 'src/app/shared/services/sidebar.service';
 
@@ -9,24 +9,17 @@ import { SidebarService } from 'src/app/shared/services/sidebar.service';
 })
 export class ReplacedChequeDetailViewComponent {
   selectedValue: any = 1;
-  replacedCheque: any = [];
-  totalAllRecordsCount = 0;
-  selectedCheque: any;
+  @Input() replacedCheque: any = [];
+  @Input() details: any = [];
+  @Input() selectedCheque: any;
   @Output() sendtoLoadData = new EventEmitter();
 
   constructor(
-    private headerService: HeaderService,
-    private sidebarService: SidebarService,
   ) { }
 
   ngOnInit(): void {
-    this.headerService.setTitle('Deposited Cheques > Cheques List ');
-    const activeNavLink = this.sidebarService.findNavLink(this.sidebarService.navLinks, 'deposites');
-    if (activeNavLink) {
-      this.sidebarService.emitEvent({ select: { navLink: activeNavLink, silent: true } });
-    }
-    this.getdepositTypes();
-    this.selectedCheque = this.replacedCheque.find((x:any) => x.id == this.selectedValue);
+    // this.getdepositTypes();
+    // this.selectedCheque = this.replacedCheque.find((x:any) => x.id == this.selectedValue);
   }
 
   chooseDeposit(deposit: any, index: number) {

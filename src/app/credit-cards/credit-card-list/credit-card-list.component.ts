@@ -13,6 +13,7 @@ import { HeaderService } from 'src/app/shared/services/header.service';
 })
 export class CreditCardListComponent {
   constructor(private creditcardservice: CreditCardService, public router: Router, private headerService: HeaderService) {
+
   }
 
   // Form controls for search inputs
@@ -191,10 +192,10 @@ export class CreditCardListComponent {
     ];
   }
 
-   // Handle table sort change
+  // Handle table sort change
   onSortChange(sort: any) {
     if (sort?.direction && sort?.column) {
-       // Map the sort column to the corresponding filter property
+      // Map the sort column to the corresponding filter property
       switch (sort.column) {
         case 'cardLast4Digits':
           this.tableConfig.filter.Sort = sort.direction === 'desc' ? 3 : 2;
@@ -418,7 +419,12 @@ export class CreditCardListComponent {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
     console.log(this.startDate);
-    this.tableConfig.filter.CollectionDate = this.startDate;
+    if (this.startDate) {
+      const fromDate = new Date(this.startDate);
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.CollectionDate = formattedFromDate;
+    } else
+      this.tableConfig.filter.CollectionDate = this.startDate;
     this.gettable();
   }
 
@@ -435,7 +441,7 @@ export class CreditCardListComponent {
     // this.statusId = event?.id;
     this.gettable();
   }
-  
+
   handleCategoryChange2(event: any) {
     this.tableConfig.filter.CardTypeId = event.id;
     // this.statusId = event?.id;
@@ -458,7 +464,7 @@ export class CreditCardListComponent {
     delete this.tableConfig.filter.BranchId;
     this.gettable();
   }
-  
+
   onClearR() {
     delete this.tableConfig.filter.RegisterId;
     this.gettable();

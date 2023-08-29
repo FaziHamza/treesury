@@ -39,13 +39,13 @@ export class ReconciliationDetailsComponent {
   provider: any;
   reconsilationstepid: any
   reconciliation: any
-  constructor(private route: ActivatedRoute, 
+  constructor(private route: ActivatedRoute,
     private creditcardservice: CreditCardService,
     private headerService: HeaderService) {
     const step = this.route.snapshot.queryParamMap.get('reconciliationHistoryid')
     if (step) {
       console.log();
-      
+
       this.reconsilationstepid = step
     }
     else {
@@ -238,7 +238,12 @@ export class ReconciliationDetailsComponent {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
     console.log(this.startDate);
-    this.tableConfig.filter.CollectionDate = this.startDate;
+    if (this.startDate) {
+      const fromDate = new Date(this.startDate);
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.CollectionDate = formattedFromDate;
+    } else
+      this.tableConfig.filter.CollectionDate = this.startDate;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 
@@ -246,7 +251,12 @@ export class ReconciliationDetailsComponent {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
     console.log(this.startDate);
-    this.tableConfig.filter.CollectionDate = this.startDate;
+    if (this.startDate) {
+      const fromDate = new Date(this.startDate);
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.CollectionDate = formattedFromDate;
+    } else
+      this.tableConfig.filter.CollectionDate = this.startDate;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 

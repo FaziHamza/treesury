@@ -17,12 +17,13 @@ import { ReplaceChequeComponent } from './replace-cheque/replace-cheque.componen
 import { ReplacedChequeDetailViewComponent } from './cheque-dashboard/replaced-cheque-detail-view/replaced-cheque-detail-view.component';
 import { DepositChequeModalComponent } from './deposit-cheque-modal/deposit-cheque-modal.component';
 import { MaxCharactersDirective } from '../shared/directives/max-characters.directive';
+import { DepositChequeDetailModalComponent } from './deposit-cheque-detail-modal/deposit-cheque-detail-modal.component';
 
 @NgModule({
   declarations: [DepositChequeComponent, DepositChequeDetailComponent,
     ChequeListComponent, ChequeDashboardComponent, DashboardCardComponent,
     ChequeAgingReportComponent, DashboardChequeChartComponent, ReplaceChequeComponent,
-    ReplacedChequeDetailViewComponent, DepositChequeModalComponent,MaxCharactersDirective],
+    ReplacedChequeDetailViewComponent, DepositChequeModalComponent,MaxCharactersDirective, DepositChequeDetailModalComponent],
   imports: [
     CommonModule,
     GoogleMapsModule,

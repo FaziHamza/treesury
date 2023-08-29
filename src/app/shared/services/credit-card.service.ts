@@ -12,7 +12,7 @@ import urlJoin from "url-join";
 export class CreditCardService {
 
   constructor(private http: HttpClient) {}
-  
+
   GetProviders(filter: any): Observable<ApiResponse> {
     const headers = {
       Authorization: 'Bearer '+localStorage.getItem("authToken"),
@@ -22,7 +22,7 @@ export class CreditCardService {
       { headers }
     );
   }
-  
+
   GetCards(): Observable<ApiResponse> {
 
     const headers = {
@@ -30,6 +30,16 @@ export class CreditCardService {
     };
     return this.http.get<ApiResponse>(
       (urlJoin(environment.apiUrl2, 'CreditCardType/GetCreditCardTypes')),
+      { headers }
+    );
+  }
+
+  getPortals(): Observable<ApiResponse> {
+    const headers = {
+      Authorization: 'Bearer '+localStorage.getItem("token"),
+    };
+    return this.http.get<ApiResponse>(
+      (urlJoin(environment.apiUrl2, 'User/GetUserPortals')),
       { headers }
     );
   }
@@ -136,5 +146,4 @@ export class CreditCardService {
       { headers }
     );
   }
-
 }

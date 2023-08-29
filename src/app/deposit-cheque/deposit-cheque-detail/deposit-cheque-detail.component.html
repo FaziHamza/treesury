@@ -93,7 +93,7 @@
           <p *ngIf="!depositeDetail?.chequeDate">---</p>
         </div>
         <div class="col-lg-2">
-          <p *ngIf="depositeDetail?.chequeCollectionJod">{{depositeDetail?.chequeCollectionJod}}</p>
+          <p *ngIf="depositeDetail?.chequeCollectionJod">{{depositeDetail?.chequeCollectionJod}} JOD</p>
           <p *ngIf="!depositeDetail?.chequeCollectionJod">---</p>
         </div>
         <div class="col-lg-2">
@@ -117,8 +117,8 @@
       <div class="wizard-form wizard-form2">
         <ul id="progressBar" class="progressbar">
           <li *ngFor="let step of steps; let i = index" [id]="'progressList-' + (i+1)"
-            class="d-inline-block fw-bold position-relative text-center float-start progressbar-list"
-            [ngClass]="{'active': step.id == depositeDetail?.statusObj?.lookupId}">
+            class="d-inline-block fw-bold position-relative text-center float-start progressbar-list hand-cursor"
+            [ngClass]="{'active': activeTabs(step)}" (click)="depositDetailModal(step)">
             <div class="step-image">
               <span [style.backgroundImage]="'url(' + step?.imagePath + ')'" [style.backgroundRepeat]="'no-repeat'"
                 [style.backgroundSize]="'contain'"></span>

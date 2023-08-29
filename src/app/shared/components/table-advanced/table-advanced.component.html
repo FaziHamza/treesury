@@ -8,7 +8,7 @@
       <thead>
         <tr>
           <th scope="col" *ngFor="let column of columns">
-            <div *ngIf="column.label == 'Select All'" class="btn justify-content-between">
+            <div *ngIf="column.label == 'Select All'  && showMultiSelect" class="btn justify-content-between">
               <ng-container>
                 <input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)" />
 
@@ -44,7 +44,7 @@
                     index: i }"></ng-container>
             </ng-template>
 
-            <ng-container *ngIf="column.label == 'Select All'; else oldContainer">
+            <ng-container *ngIf="column.label == 'Select All' && column.key == ''; else oldContainer">
               <input type="checkbox" value="{{ item.orderCollectionId }}" [(ngModel)]="item.checked"
                 (click)="getSelectedItem(tempData[i], $event)" />
             </ng-container>

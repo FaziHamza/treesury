@@ -1,4 +1,3 @@
-
 <div class="card-page">
   <!-- Search bar -->
   <div class="row">
@@ -7,9 +6,10 @@
         <button class="btn" type="button" id="button-addon1" (click)="removeSearch()">
           <i class="fa-solid fa-search"></i>
         </button>
-        <input type="text" class="form-control" [formControl]="searchChequeText" numbersOnly placeholder="Search By Cheque Number"
-          />
-        <button class="btn" type="button" id="button-addon1" [hidden]="searchChequeText.value == null" (click)="removeChequeSearch()">
+        <input type="text" class="form-control" [formControl]="searchChequeText" numbersOnly
+          placeholder="Search By Cheque Number" />
+        <button class="btn" type="button" id="button-addon1" [hidden]="searchChequeText.value == null"
+          (click)="removeChequeSearch()">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -20,7 +20,8 @@
           <i class="fa-solid fa-search"></i>
         </button>
         <input type="text" class="form-control" [formControl]="searchText" placeholder="Search By Customer Name" />
-        <button class="btn" type="button" id="button-addon1" [hidden]="searchText.value == null" (click)="removeSearch()">
+        <button class="btn" type="button" id="button-addon1" [hidden]="searchText.value == null"
+          (click)="removeSearch()">
           <i class="fa-solid fa-xmark"></i>
         </button>
       </div>
@@ -32,38 +33,39 @@
     </div>
     <div class="col-md-2">
       <div class="dropdown">
-        <button class="btn dropdownButton more-filter-drop"
-                type="button"
-                id="dropdownMenuButton"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
+        <button class="btn dropdownButton more-filter-drop" type="button" id="dropdownMenuButton"
+          data-bs-toggle="dropdown" aria-expanded="false">
           <i class="fa-regular fa-plus"></i> More Filters
         </button>
         <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton">
           <li>
             <a class="dropdown-item">
               <input type="checkbox" [(ngModel)]="collectionDate" class="checkBox"
-              (change)="filterCollectionDates($event.target)" />
-            &nbsp; Collection Date
+                (change)="filterCollectionDates($event.target)" />
+              &nbsp; Collection Date
             </a>
             <a class="dropdown-item">
               <input type="checkbox" [(ngModel)]="dueDate" class="checkBox" (change)="filterDueDates($event.target)" />
-            &nbsp; Due Date
+              &nbsp; Due Date
             </a>
             <a class="dropdown-item">
               <input type="checkbox" [(ngModel)]="bank" class="checkBox" (change)="filterbank($event.target)" />
               &nbsp;Bank
             </a>
+            <a class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="amount" class="checkBox" (change)="filteramount($event.target)" />
+              &nbsp;Amount
+            </a>
           </li>
         </ul>
       </div>
     </div>
-    <!-- <div class="col-md-2 d-flex justify-content-end">
-      <button class="btn btn-add">
+    <div class="col-md-2 d-flex justify-content-end" *ngIf="!showMultiSelect">
+      <button class="btn btn-add" (click)="multiSelect()">
         Multi Select
-        <svg-icon src="/assets/svg/add-circle.svg" class="icon"></svg-icon> Add Branch
+        <!-- <svg-icon src="/assets/svg/add-circle.svg" class="icon"></svg-icon> Add Branch -->
       </button>
-    </div> -->
+    </div>
   </div>
   <!-- Deposited Cheques List -->
   <div class="deposited-cheques-list-tabs">
@@ -77,8 +79,8 @@
             <div class="btn-group" role="group" aria-label="Basic example">
               <button type="button" class="btn btn-light">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1"  value=""
-                    checked (click)="IsPDCFilter('')">
+                  <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="" checked
+                    (click)="IsPDCFilter('')">
                   <label class="form-check-label" for="exampleRadios1">
                     All
                   </label>
@@ -88,10 +90,10 @@
               <button type="button" class="btn btn-light">
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="true"
-                     (click)="IsPDCFilter(true)">
+                    (click)="IsPDCFilter(true)">
                   <label class="form-check-label" for="exampleRadios2">
                     PDC Cheques
-                     <!-- <span> 5</span> -->
+                    <!-- <span> 5</span> -->
                   </label>
                 </div>
 
@@ -99,7 +101,7 @@
               <button type="button" class="btn btn-light">
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="false"
-                     (click)="IsPDCFilter(false)">
+                    (click)="IsPDCFilter(false)">
                   <label class="form-check-label" for="exampleRadios3">
                     Cheques
                     <!-- <span> 4</span> -->
@@ -169,20 +171,34 @@
         </li>
       </ul>
     </div>
+    <div class="dropdown" *ngIf="amount">
+      <button class="btn dropdownFilters" type="button">
+        <!-- <input type="text" style="height:46px;border:none" (bsValueChange)="onDueDateValueChange($event)"
+                    placeholder="Select Date" class="form-control" bsDaterangepicker> -->
+        <input type="text" style="height:46px;border:none" class="form-control" placeholder="Enter Amount"
+          (input)="inputvalue($event)" [(ngModel)]="displayAmount">
+        <i class="fa-regular fa-circle-xmark" (click)="removeAmount()"></i>
+      </button>
+    </div>
   </div>
   <!-- Table -->
   <div class="row mt-2">
     <div class="col-md-12">
-      <app-table-advanced style="cursor: pointer;" [config]="tableConfig" [columns]="tableColumns" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading"
-        [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
+      <app-table-advanced style="cursor: pointer;" [showMultiSelect]="showMultiSelect" [config]="tableConfig" [columns]="tableColumns"
+        [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading" [page]="page" [total]="total"
+        (selectedData)="onSelectData($event)" [limit]="limit" (sortUpdated)="onSortChange($event)"
         (pageUpdated)="onPageChange($event)">
-        <ng-template  libTableAdvancedColumn="chequeNo" let-row="row">
+        <ng-template libTableAdvancedColumn="select" let-row="row">
+          <input type="checkbox" value="{{ row }}" *ngIf="showMultiSelect" [(ngModel)]="row.checked"
+            (click)="getSelectedItem(row, $event)" />
+        </ng-template>
+        <ng-template libTableAdvancedColumn="chequeNo" let-row="row">
           {{ row?.chequeNo}}
         </ng-template>
-        <ng-template  libTableAdvancedColumn="customerName" let-row="row">
+        <ng-template libTableAdvancedColumn="customerName" let-row="row">
           {{ row.customer?.customerName}}
         </ng-template>
-        <ng-template  libTableAdvancedColumn="bank" let-row="row">
+        <ng-template libTableAdvancedColumn="bank" let-row="row">
           {{ row.bank}}
         </ng-template>
         <ng-template libTableAdvancedColumn="chequeCollectionJod" let-row="row">
@@ -195,31 +211,31 @@
           {{ row.collectedAt | date :'dd MMM yyyy' }}
         </ng-template>
         <ng-template libTableAdvancedColumn="status" let-row="row">
-          <p class="collected-btn"
-          [style.color]="row?.statusObj?.lookupTextColor"
-          [style.background-color]="row?.statusObj?.lookupBGColor" > {{row?.statusObj?.translations?.[0].lookupName}} </p>
+          <p class="collected-btn" [style.color]="row?.statusObj?.lookupTextColor"
+            [style.background-color]="row?.statusObj?.lookupBGColor"> {{row?.statusObj?.translations?.[0].lookupName}}
+          </p>
         </ng-template>
-        <ng-template libTableAdvancedColumn="action" let-row="row"st >
-          <div class="dropdown" style="position: absolute !important; margin-top: -15px;" [ngClass]="{'disabled': row?.statusObj?.translations?.[0]?.lookupName == 'Collected'}" >
-            <div class="btn dropdownButton"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
+        <ng-template libTableAdvancedColumn="action" let-row="row" st>
+          <div class="dropdown" style="position: absolute !important; margin-top: -15px;"
+            *ngIf="row?.statusObj?.translations?.[0]?.lookupName != 'Collected'"
+            [ngClass]="{'disabled': row?.statusObj?.translations?.[0]?.lookupName == 'Collected'}">
+            <div class="btn dropdownButton" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
             </div>
             <ul class="dropdown-menu menu" aria-labelledby="dropdownMenuButton1">
               <li *ngIf="row?.statusObj?.translations?.[0]?.lookupName == 'Deposited'
               || row?.statusObj?.translations?.[0]?.lookupName == 'Re-deposited'|| row?.statusObj?.translations?.[0]?.lookupName == 'Re-deposit'
               || row?.statusObj?.translations?.[0]?.lookupName == 'Replaced';else secondBlock">
-                <a class="dropdown-item" (click)="depositDetail(item,row)" *ngFor="let item of firstActionList" >
-                 {{ item?.name?.[0].lookupName}}
+                <a class="dropdown-item" (click)="depositDetail(item,row)" *ngFor="let item of firstActionList">
+                  {{ item?.name?.[0].lookupName}}
                 </a>
               </li>
 
               <ng-template #secondBlock>
-                <li *ngIf="row?.statusObj?.translations?.[0]?.lookupName == 'Returned' || row?.statusObj?.translations?.[0]?.lookupName == 'Bounced';else thirdBlock">
-                  <a class="dropdown-item" (click)="depositDetail(item,row)" *ngFor="let item of secondActionList" >
-                   {{ item?.name?.[0].lookupName}}
+                <li
+                  *ngIf="row?.statusObj?.translations?.[0]?.lookupName == 'Returned' || row?.statusObj?.translations?.[0]?.lookupName == 'Bounced';else thirdBlock">
+                  <a class="dropdown-item" (click)="depositDetail(item,row)" *ngFor="let item of secondActionList">
+                    {{ item?.name?.[0].lookupName}}
                   </a>
                 </li>
               </ng-template>
@@ -237,4 +253,9 @@
       </app-table-advanced>
     </div>
   </div>
+</div>
+<div class="btns-group" *ngIf="showMultiSelect">
+  <button type="button" (click)="multi()" class="btn btn-cancel">
+    Close
+  </button>
 </div>

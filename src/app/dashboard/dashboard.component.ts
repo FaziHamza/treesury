@@ -26,7 +26,7 @@ export class DashboardComponent {
     },
     {
       id: 'deposit-cheque',
-      name: 'Deposit Cheques',
+      name: 'Deposited Cheques',
       url: '/deposit-cheque',
       icon: 'credit',
     },

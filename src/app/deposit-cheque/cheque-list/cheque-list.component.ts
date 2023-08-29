@@ -82,6 +82,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       .getDepositCheques(this.tableConfig.filter)
       .subscribe(result => {
         if (result) {
+          this.selecteddata = [];
           this.makeListData(result.data || []);
 
           this.totalAllRecordsCount = result?.totalRecordCount;
@@ -132,6 +133,11 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   initTableColumns() {
     this.tableColumns = [
       {
+        key: 'select',
+        label: 'Select All',
+        canSort: true,
+      },
+      {
         key: 'chequeNo',
         label: 'Cheque No',
         canSort: true,
@@ -179,7 +185,42 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     }
     return '';
   }
+  onSelectData(selectedData: any) {
+    for (const [Index, iterator] of selectedData.entries()) {
+      this.selecteddata.push(iterator.id)
+    }
+    if (selectedData.length == 0)
+      this.selecteddata = [];
+  }
+  selecteddata: any[] = [];
+  getSelectedItem(data: any, event: any): any {
+    if (this.selecteddata.length == 0 && event.target.checked) {
+      this.sort = 1;
+      this.page = 1;
+      if (this.tableConfig.filter.Status != data.status) {
+        this.tableConfig.filter.Status = data.status;
+        this.fetchData();
+      } else
+        this.selecteddata.push(data?.id);
+    }
+    if (event.target.checked) {
+      this.selecteddata.push(data?.id);
+    } else {
+      let index = this.selecteddata.indexOf(data?.id);
+      this.selecteddata.splice(index, 1);
+    }
+  }
+  showMultiSelect = false;
+  multiSelect() {
+    this.showMultiSelect = true;
+  }
+  checkAllCheckBox(ev: any) {
+    if (ev.target.checked) {
+    } else {
+      this.selecteddata = [];
+    }
 
+  }
   removeSearch() {
     this.searchText.setValue(null);
     this.sort = 1;
@@ -210,11 +251,16 @@ export class ChequeListComponent implements OnInit, OnDestroy {
  * filter selection
  */
   bank: boolean = false;
+  amount: boolean = false;
+  displayAmount = 0;
   collectionDate: boolean = false;
   dueDate: boolean = false;
 
   filterbank(event: any) {
     this.bank = event.checked;
+  }
+  filteramount(event: any) {
+    this.amount = event.checked;
   }
   filterCollectionDates(event: any) {
     this.collectionDate = event.checked;
@@ -222,13 +268,40 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   filterDueDates(event: any) {
     this.dueDate = event.checked;
   }
+  inputvalue(value: any) {
+    let checkPoint = false;
+    const inputValue = value?.target?.value;
+    if (inputValue && inputValue.includes('.')) {
+      const parts = inputValue.split('.');
+      if (parts.length === 2 && parts[1].length > 0) {
+        if (inputValue === '0.0')
+          checkPoint = true;
+        else if (inputValue === '0.00')
+          checkPoint = true;
+        else checkPoint = false;
+      } else if (parts.length === 2 && parts[1].length === 0) {
+        checkPoint = true;
+      } else {
+        checkPoint = false;
+      }
+    }
+    if (!checkPoint && inputValue > 0) {
+      this.tableConfig.filter.Amount = parseFloat(inputValue).toFixed(3);
+      this.displayAmount = parseFloat(parseFloat(inputValue).toFixed(3));
+      this.page = 1;
+      this.sort = 1;
+      this.fetchData();
+    } else {
+      this.displayAmount = 0;
+    }
+  }
   /**
 * get Branches
 */
 
   banksList: any;
   getbanks() {
-    const api1$ = this.depositservice.getLookups(11);
+    const api1$ = this.depositservice.getBankLookups(11);
     const api2$ = this.depositservice.getLookups(28);
     const api3$ = this.depositservice.getLookups(29);
     forkJoin([api1$, api2$, api3$]).subscribe(
@@ -237,7 +310,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
         if (result1) {
           this.banksList = result1.data || []
         }
-        console.log("ss",result2)
+        console.log("ss", result2)
         if (result2) {
           this.statusId = result2.data || [];
         }
@@ -255,11 +328,11 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       }
     );
   }
-  firstActionList :any[] = [];
-  secondActionList :any[] = [];
-  makeListData(data:any){
-    const updatedData = data.map((item:any) => {
-      const collectedAtDate = new Date(item.collectedAt);
+  firstActionList: any[] = [];
+  secondActionList: any[] = [];
+  makeListData(data: any) {
+    const updatedData = data.map((item: any) => {
+      const collectedAtDate = new Date(item.chequeDate);
       const currentDate = new Date();
 
       const isCollectedInPast = collectedAtDate < currentDate && item.statusObj?.translations?.[0]?.lookupName != 'Collected';
@@ -269,15 +342,15 @@ export class ChequeListComponent implements OnInit, OnDestroy {
         isCollectedInPast: isCollectedInPast
       };
     });
-    debugger
+
     this.deposites = updatedData;
 
   }
-  makeActionList(){
+  makeActionList() {
     // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
     const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
     const secondArrayLookupNames = ["Re-deposit", "Replace"];
-   this.firstActionList =  this.actionList.filter(item =>
+    this.firstActionList = this.actionList.filter(item =>
       firstArrayLookupNames.includes(item.name[0]?.lookupName)
     );
     this.secondActionList = this.actionList.filter(item =>
@@ -285,18 +358,18 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     );
   }
 
-  depositDetail(item:any,row:any){
-    if(item?.name?.[0].lookupName == 'Return')
-      this.openModalTrigger(item,row,'Returned Cheque Details View',true,true)
-    else if(item?.name?.[0].lookupName == 'Bounce')
-      this.openModalTrigger(item,row,'Bounce Cheque',true,true)
-    else if(item?.name?.[0].lookupName == 'Replace')
-      this.replace(item,row)
-    else if(item?.name?.[0].lookupName == 'Re-deposit')
-      this.openModalTrigger(item,row,'Re-deposited Cheque Details View',true,true)
-    else if(item?.name?.[0].lookupName == 'Collect')
-      this.openModalTrigger(item,row,'Collect Cheque',true,false)
-    else if(item?.name?.[0].lookupName == 'replace-view')
+  depositDetail(item: any, row: any) {
+    if (item?.name?.[0].lookupName == 'Return')
+      this.openModalTrigger(item, row, 'Returned Cheque Details View', true, true)
+    else if (item?.name?.[0].lookupName == 'Bounce')
+      this.openModalTrigger(item, row, 'Bounce Cheque', true, true)
+    else if (item?.name?.[0].lookupName == 'Replace')
+      this.replace(item, row)
+    else if (item?.name?.[0].lookupName == 'Re-deposit')
+      this.openModalTrigger(item, row, 'Re-deposited Cheque Details View', true, true)
+    else if (item?.name?.[0].lookupName == 'Collect')
+      this.openModalTrigger(item, row, 'Collect Cheque', true, false)
+    else if (item?.name?.[0].lookupName == 'replace-view')
       this.replaceView()
   }
   /**
@@ -326,6 +399,14 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.dueDate = false;
     delete this.tableConfig.filter.FromDueDate;
     delete this.tableConfig.filter.ToDueDate;
+    this.page = 1;
+    this.sort = 1;
+    this.fetchData();
+  }
+  removeAmount() {
+    this.displayAmount = 0
+    this.amount = false;
+    delete this.tableConfig.filter.Amount;
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -382,21 +463,30 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.fetchData();
   }
 
-  openModalTrigger(actionType:any,detail: any, item: any, confirm: boolean, detailShow: boolean): void {
+  openModalTrigger(actionType: any, detail: any, item: any, confirm: boolean, detailShow: boolean): void {
+    let listArray: any[] = [];
+    if (this.showMultiSelect) {
+      this.selecteddata.forEach(element => {
+        const data = this.deposites.find((a: any) => a.id === element);
+        listArray.push(data);
+      });
+    } else
+      listArray = [detail];
+
     const modalRef = this.modalService.open(DepositChequeModalComponent, {
       backdrop: 'static',
       keyboard: false,
       size: 'lg',
     });
-    modalRef.componentInstance.details = detail;
+    modalRef.componentInstance.details = listArray;
     modalRef.componentInstance.title = item;
     modalRef.componentInstance.isConfirmShow = confirm;
     modalRef.componentInstance.detailShow = detailShow;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
-      debugger
+      if (result)
+        this.ngOnInit();
       console.log('resendtoLoadDatasult', result);
-      this.ngOnInit();
       this.modalService.dismissAll();
 
 
@@ -404,7 +494,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     });
   }
 
-  replace(actionType:any,detail: any) {
+  replace(actionType: any, detail: any) {
     const modalRef = this.modalService.open(ReplaceChequeComponent, {
       backdrop: 'static',
       keyboard: false,
@@ -413,10 +503,12 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.details = detail;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
-      debugger
+      if (result) {
+        this.ngOnInit();
+      }
       console.log('resendtoLoadDatasult', result);
 
-      this.ngOnInit();
+
       this.modalService.dismissAll();
       // this.getList();
     });
@@ -437,5 +529,9 @@ export class ChequeListComponent implements OnInit, OnDestroy {
 
   canPerformAction(catId: number, subCatId: number, perItemName: number) {
     return this.permission.checkPermission(catId, subCatId, perItemName);
+  }
+  multi(){
+    this.showMultiSelect = false
+    this.selecteddata = [];
   }
 }

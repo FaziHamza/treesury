@@ -277,7 +277,12 @@ export class CreateReconciliationComponent {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
     console.log(this.startDate);
-    this.tableConfig.filter.CollectionDate = this.startDate;
+    if (this.startDate) {
+      const fromDate = new Date(this.startDate);
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.CollectionDate = formattedFromDate;
+    } else
+      this.tableConfig.filter.CollectionDate = this.startDate;
     this.fetcAllData();
   }
 

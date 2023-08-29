@@ -4,11 +4,11 @@
   <div class="d-flex right-title">
     <div class="d-flex">
       <h5>Replace By:</h5>
-      <p>Sofy</p>
+      <p>{{details?.createdBy?.fullName}}</p>
     </div>
     <div class="d-flex">
       <h5 class="bold">Replace Date:</h5>
-      <p>14/12/2023</p>
+      <p>{{details?.chequeDate | date : 'dd/MM/yyyy'}}</p>
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="row" *ngFor="let item of selectedCheque.children;">
-    <div class="cr-replace-view">
+    <div class="cr-replace-view" >
       <div class="cr-replace-head">
         <div class="row">
           <div class="col-lg-3 col-sm-6">
@@ -32,7 +32,7 @@
               <h6 class="title">
                 Amount to Pay
               </h6>
-              <p>{{item.ChequeAmount}}</p>
+              <p>{{item.chequeCollectionJod}} JOD</p>
             </div>
           </div>
           <div class="col-lg-3 col-sm-6">
@@ -40,7 +40,7 @@
               <h6 class="title">
                 Cheque No
               </h6>
-              <p>{{item.ChequeNumber}}</p>
+              <p>{{item.chequeNo}}</p>
             </div>
           </div>
           <div class="col-lg-3 col-sm-6">
@@ -48,21 +48,21 @@
               <h6 class="title">
                 Date
               </h6>
-              <p>{{item.ChequeDate}}</p>
+              <p>{{item.chequeDate | date : 'dd-MM-yyyy'}}</p>
             </div>
           </div>
           <div class="col-lg-3 col-sm-6">
             <h6 class="title">
               Bank
             </h6>
-            <p>{{item.ChauqeBankID}}</p>
+            <p>{{item?.bank?.translations?.[0]?.lookupName}}</p>
           </div>
           <div class="col-lg-3 col-sm-6">
             <div class="block">
               <h6 class="title">
                 Cheque drawer name
               </h6>
-              <p>{{item.ChauqeName}}</p>
+              <p>{{item.customer?.customerName}}</p>
             </div>
           </div>
           <div class="col-lg-3 col-sm-6">
@@ -70,7 +70,7 @@
               <h6 class="title">
               </h6>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" [checked]="item.Customer" type="checkbox" disabled />
+                <input class="form-check-input" [checked]="true" type="checkbox" disabled />
                 <label class="form-check-label" for="indoor"> Same Customer </label>
               </div>
             </div>
@@ -82,9 +82,44 @@
                   <div>
                     <div class="top-heading">
                       <h5>{{selectedCheque.name}}</h5>
-                      <button class="btn btn-light collected-btn">Collected</button>
+                      <button class="btn btn-light collected-btn"
+                      [style.color]="details?.statusObj?.lookupTextColor"
+                      [style.background-color]="details?.statusObj?.lookupBGColor"
+                      >{{details?.statusObj?.translations?.[0]?.lookupName}}</button>
                     </div>
-                    <img src="../../../assets/cheque.png" width="100%"  height="300px"  />
+                    <div class="no-image-display" *ngIf="details?.chequeImages?.length == 0 || !details?.chequeImages">
+                      <img
+                        src="https://cdn.dribbble.com/users/1785628/screenshots/5605512/media/097297f8e21d501ba45d7ce437ed77bd.gif"
+                        alt="">
+                      <h3 class="text-center">No Image to display</h3>
+                    </div>
+                    <div *ngIf="details?.chequeImages?.length > 0" id="carouselExampleIndicators" class="carousel slide"
+                      data-bs-ride="carousel">
+                      <div class="carousel-indicators">
+                        <button *ngFor="let image of details?.chequeImages; let i = index" type="button"
+                          data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
+                          [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i+1)"></button>
+                      </div>
+                      <div class="carousel-inner">
+
+                        <div *ngFor="let image of details?.chequeImages; let i = index" class="carousel-item"
+                          [class.active]="i === 0">
+
+                          <img [src]="image?.imagePath" class="d-block w-100" alt="...">
+                        </div>
+                      </div>
+                      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                      </button>
+                      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                      </button>
+                    </div>
+                    <!-- <img src="../../../assets/cheque.png" width="100%"  height="300px"  /> -->
                   </div>
                 </div>
               </div>
@@ -92,9 +127,9 @@
           </div>
           <div class="col-md-12 mt-3">
             <div class="block">
-              <h6 class="title">No note has been added
+              <h6 class="title" *ngIf="!item?.notes" >No note has been added
               </h6>
-              <p>{{item.Note}}</p>
+              <p *ngIf="item?.notes">{{item.notes}}</p>
             </div>
           </div>
         </div>

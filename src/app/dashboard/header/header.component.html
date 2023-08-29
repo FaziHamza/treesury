@@ -20,6 +20,18 @@
     </div>
   </div>
   <ul class="navbar-nav">
+    <li class="nav-item dropdown mt-1">
+      <img src="/assets/images/navicon/grid.svg" class="nav-link dropdown-toggle" role="button"
+        data-bs-toggle="dropdown" aria-expanded="false" id="button-basic" aria-controls="dropdown-basic" />
+      <ul class="dropdown-menu-left dropdown-menu gap-4 flex-column p-2" style="width:260px;left: auto;right: 0px;">
+        <li *ngFor="let item of portalList" class="cursor-pointer" role="menuitem">
+          <div class="d-flex align-items-center gap-2" (click)="redirectTo(item)">
+            <img  width="60" [src]="item?.imagePath" />
+            <h6 class="fw-500 m-0">{{item?.translations}}</h6>
+          </div>
+        </li>
+      </ul>
+    </li>
     <li ngbDropdown class="nav-item">
       <a ngbDropdownToggle class="nav-link" href="javascript:void(0)">
         <span class="char-name">

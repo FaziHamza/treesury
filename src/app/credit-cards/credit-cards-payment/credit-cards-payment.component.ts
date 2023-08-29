@@ -18,6 +18,7 @@ export class CreditCardsPaymentComponent {
     private sidebarService: SidebarService,
     private route: ActivatedRoute
   ) {
+    this.headerService.selecteddeposit = 1;
     const step = this.route.snapshot.queryParamMap.get('num')
     if (step) {
       this.selecteddeposit =parseInt(step)
@@ -39,7 +40,7 @@ export class CreditCardsPaymentComponent {
   ngOnDestroy() {
   }
   chooseDeposit(deposit: any) {
-    
+
     this.selecteddeposit = deposit.id;
   }
   getdepositTypes() {

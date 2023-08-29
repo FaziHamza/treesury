@@ -1,0 +1,92 @@
+<div class="modal-body">
+  <div class="row">
+    <div class="col-lg-12 text-end">
+      <span (click)="dismissModal()"><i class="fa-solid fa-xmark fa-2xl text-danger"></i></span>
+    </div>
+  </div>
+  <div class="page-heading">
+    <div>
+      <h5>
+        {{title}} Cheque Details View
+      </h5>
+    </div>
+    <span class="text-end">
+      <span>{{title}} By: <span class="soft-text"> {{details?.createdBy?.fullName}}</span></span>
+      <span class="last-content">
+        {{title == 'Returned' ? 'Return Date: ' : title == 'Collected' ? 'Collection Date: ' :  title == 'Re-deposited' ? 'Re-deposit Date: ' : title }}:
+        <span class="soft-text"> {{details?.chequeDate | date : 'dd/MM/yyyy'}}</span></span>
+    </span>
+  </div>
+
+  <div class="modal-cr-card">
+    <div class="card-head">
+      <div class="row">
+        <div class="col-lg-2">
+          <h6 class="title"> Cheque No. </h6>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="title">
+            Customer Name
+          </h6>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="title">
+            Bank Name
+          </h6>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="title">
+            Due Date
+          </h6>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="title">
+            Amounts
+          </h6>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="row">
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeNo">{{details?.chequeNo}}</p>
+          <p *ngIf="!details?.chequeNo">---</p>
+        </div>
+        <div class="col-lg-3">
+          <p *ngIf="details?.customer?.customerName">{{details?.customer?.customerName}} <br />
+            {{details?.customer?.mobile}}</p>
+          <p *ngIf="!details?.customer?.customerName">---</p>
+        </div>
+        <div class="col-lg-3" *ngIf="details?.bank?.translations;else banks">
+          <p *ngIf="details?.bank?.translations?.[0]?.lookupName"> <img [src]="details?.bank?.imagePath" height="25px"
+              width="25px" /> {{details?.bank?.translations?.[0]?.lookupName}}</p>
+          <p *ngIf="!details?.bank">---</p>
+        </div>
+        <ng-template #banks>
+          <div class="col-lg-3">
+            <p *ngIf="details?.bank"> <img [src]="details?.bank?.imagePath" height="25px" width="25px" />
+              {{details?.bank}}</p>
+            <p *ngIf="!details?.bank">---</p>
+          </div>
+        </ng-template>
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeDate">{{details?.chequeDate | date :'dd MMM yyyy'}}</p>
+          <p *ngIf="!details?.chequeDate">---</p>
+        </div>
+        <div class="col-lg-2">
+          <p *ngIf="details?.chequeCollectionJod">{{details?.chequeCollectionJod | number:".3"}} JOD</p>
+          <p *ngIf="!details?.chequeCollectionJod">---</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="detail-content" *ngIf="detailShow">
+    <p>Added Note:</p>
+    <textarea readonly rows="5" [appMaxCharacters]="200" class="form-control" [ngModel]="details?.notes"></textarea>
+  </div>
+  <div class="btns-group">
+    <button type="button" (click)="dismissModal()" class="btn btn-cancel">
+      Close
+    </button>
+  </div>
+</div>

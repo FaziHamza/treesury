@@ -41,6 +41,15 @@ export class DepositService {
         { headers }
       );
     }
+    getBankLookups(id: any): Observable<ApiResponse> {
+
+      const headers = {
+        Authorization: 'Bearer '+localStorage.getItem("token"),
+      };
+      return this.http.get<ApiResponse>(environment.apiUrl2+'/Lookups/GetLookups?lookupTypeId='+id+"&PageNo=0&PageSize=1000",
+        { headers }
+      );
+    }
     getChequesActionsLog(id: any): Observable<ApiResponse> {
 
       const headers = {
@@ -63,6 +72,12 @@ export class DepositService {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };
       return this.http.post<ApiResponse>(urlJoin(environment.apiUrl2, '/Cheques/ActionsOnCheques'), data,{headers});
+    }
+    getChequeActionDetails(ChequeId: any,ActionId:any): Observable<ApiResponse> {
+      const headers = {
+        Authorization: 'Bearer '+localStorage.getItem("token"),
+      };
+      return this.http.get<ApiResponse>(urlJoin(environment.apiUrl2, '/Cheques/GetChequeActionDetails?ChequeId='+ChequeId+"&ActionId="+ActionId),{headers});
     }
     GetDashboardCard(): Observable<ApiResponse> {
       const headers = {
