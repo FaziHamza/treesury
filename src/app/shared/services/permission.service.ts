@@ -9,7 +9,7 @@ export class PermissionService {
   permissions: any = [/* Your permissions data */];
 
   constructor(private apiService: DepositService) {
-    this.apiService.getPermissions(17002).subscribe(res=>{
+    this.apiService.getPermissions(17004).subscribe(res=>{
       if(res.isSuccess){
         this.permissions = res.data;
       }

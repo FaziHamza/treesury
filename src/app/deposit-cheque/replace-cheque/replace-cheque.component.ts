@@ -128,6 +128,7 @@ export class ReplaceChequeComponent {
         formData.append('ChequeDate', formattedFromDate);
         formData.append('BankId', this.form.value.BankId.toString());
         formData.append('ChequeCustomer', this.form.value.ChequeCustomer);
+        formData.append('Notes', this.form.value.Note);
         this.depositservice.actionOnCheques(formData)
           .subscribe({
             next: response => {

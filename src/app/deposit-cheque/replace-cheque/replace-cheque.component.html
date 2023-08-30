@@ -119,11 +119,13 @@
             <label class="custom-label-field">Date <span class="text-danger"> *</span> </label>
             <button class="btn dropdownFilters custom-date-field" type="button">
               <input formControlName="ChequeDate" type="text" (bsValueChange)="onDateValueChange($event)"
-                placeholder="Select Date" class="form-control datepicker" bsDatepicker
-                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
-              <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+                     placeholder="Select Date" class="form-control datepicker" bsDatepicker
+                     [bsConfig]="{ containerClass: 'theme-red', isAnimated: true, showClearButton: true }"
+                     #dp="bsDatepicker">
+              <img class="calender" src="../../../../assets/images/calendar.png" alt=""
+                   (click)="dp.toggle()">
               <i class="fa-regular fa-circle-xmark" *ngIf="form.get('ChequeDate')?.value"
-                (click)="removeCollectionDateFilter()"></i>
+                 (click)="removeCollectionDateFilter()"></i>
             </button>
             <div *ngIf="submitted && formValid['ChequeDate']?.invalid" class="ng-dirty text-danger">
               <span class="error" *ngIf="formValid['ChequeDate']?.errors?.['required']">
@@ -173,7 +175,7 @@
       <div class="row mt-2">
         <div class="col-md-6">
           <div class="form-group overflow-hidden position-relative">
-            <label class="custom-label-field">Upload Bank Logo <span class="text-danger"> *</span></label>
+            <!-- <label class="custom-label-field">Upload Bank Logo <span class="text-danger"> *</span></label> -->
             <div class="col-lg-12 ">
               <div class="file-uploader" (click)="galleryImage.click()">
                 <img class="mb-3" src="assets/images/uploader.png" />
@@ -194,13 +196,13 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-2">
           <button class="btn btn-add " type="button">
             Upload
           </button>
         </div>
-      </div>
+      </div> -->
 
       <div class="col-md-12 mt-3">
         <div class="form-group">

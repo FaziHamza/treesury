@@ -1,8 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://dx-admimistrationstage.azurewebsites.net/POSAPI/api',
+  apiUrl: 'https://admin-dx-be-dev.azurewebsites.net/api',
   apiUrl2: 'https://treasury-dx-be-dev.azurewebsites.net/api',
-  allowedDomains: ['dx-admimistrationstage.azurewebsites.net'],
+  allowedDomains: ['admin-dx-be-dev.azurewebsites.net'],
   portalUrl: 'https://dx-portalsstage.azurewebsites.net/login',
   version: '1.0.0',
   googleMapKey: 'AIzaSyAAQ7GPIxJs5PTBccmO9OZwBUy464p59bY',

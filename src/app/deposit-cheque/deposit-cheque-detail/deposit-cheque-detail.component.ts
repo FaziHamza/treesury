@@ -124,6 +124,9 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.detailShow = detailShow;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
+      if (result) {
+        this.ngOnInit();
+      }
       console.log('resendtoLoadDatasult', result);
       this.modalService.dismissAll();
       // this.getList();
@@ -131,13 +134,8 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
   }
   depositDetailModal(item: any) {
     let findStatus = this.masterActivityLog.find(a => a.statusId == item.id);
-    let actionId :any;
-    if(item.id == 28001)
-      actionId = 29010
-    else
-    actionId = findStatus?.actionId
-    if (actionId) {
-      this.depositservice.getChequeActionDetails(this.id, actionId)
+    if (findStatus) {
+      this.depositservice.getChequeActionDetails(this.id, findStatus.actionId)
         .subscribe({
           next: response => {
             if (response.isSuccess) {
@@ -149,6 +147,8 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
                 this.replaceView(response.data)
               else if (findStatus?.action?.[0].lookupName == 'Re-deposit')
                 this.openDetailModal(response.data, 'Re-deposited', true, true)
+              else if (findStatus?.action?.[0].lookupName == "Deposite")
+                this.openDetailModal(response.data, 'Deposited', true, false)
               else if (findStatus?.action?.[0].lookupName == 'Collect')
                 this.openDetailModal(response.data, 'Collected', true, false)
             } else {
@@ -193,6 +193,9 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.details = this.depositeDetail;
     modalRef.componentInstance.actionType = actionType;
     modalRef.componentInstance.sendtoLoadData.subscribe((result: any) => {
+      if (result) {
+        this.ngOnInit();
+      }
       console.log('resendtoLoadDatasult', result);
       this.modalService.dismissAll();
       // this.getList();
@@ -207,10 +210,10 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
     let updateData: any = [];
     if (data) {
       let replacedCheque: any = JSON.parse(JSON.stringify(data));
-      replacedCheque.bank = data?.replacedCheque?.bank;
-      replacedCheque.chequeDate = data?.replacedCheque?.chequeDate;
-      replacedCheque.chequeNo = data?.replacedCheque?.chequeNo;
-      replacedCheque.customer = data?.replacedCheque?.customer;
+      replacedCheque = {
+        ...data,
+        ...data?.replacedCheque
+      };
       let obj = {
         id: 1,
         name: 'V2 Replace Cheque Detail',
@@ -223,7 +226,6 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
         children: [data]
       }
       updateData.push(obj1);
-
     }
     modalRef.componentInstance.replacedCheque = updateData;
     modalRef.componentInstance.details = data;

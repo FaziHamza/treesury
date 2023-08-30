@@ -587,7 +587,7 @@ input.form-control:focus {
   background-position: center;
   background-size: 24px;
   background-repeat: no-repeat;
-  // background-image: url('https://dx-admimistrationstage.azurewebsites.net/POSAPI/Uploads/Lookups/Returned.png');
+  // background-image: url('https://admin-dx-be-dev.azurewebsites.net/Uploads/Lookups/Returned.png');
 }
 
 .progressbar-list .step-image {
@@ -1058,7 +1058,10 @@ input.form-control:focus {
 .hand-cursor {
   cursor: pointer;
 }
-
+.display-underline{
+  text-decoration: underline;
+  color: #2f73b8 !important;
+}
 .no-image-display {
   height: 300px;
   display: flex;
@@ -1199,4 +1202,13 @@ table td {
 // }
 .highlight-row{
   background-color: #fdebed;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon{
+  background-image: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="red" d="M7 1L5.6 2.5L13 10l-7.4 7.5L7 19l9-9z"/></svg>  ');
+}
+
+.carousel-control-prev-icon{
+  background-image: url('data:image/svg+xml, <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="red" d="m4 10l9 9l1.4-1.5L7 10l7.4-7.5L13 1z"/></svg>');
+
 }

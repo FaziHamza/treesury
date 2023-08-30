@@ -7,7 +7,6 @@ import { Subject, debounceTime, distinctUntilChanged, takeUntil, forkJoin } from
 import { TableColumn, TableConfig } from 'src/app/shared/components/table-advanced';
 import { DepositService } from 'src/app/shared/services/deposit.service';
 import DataLabelsPlugin from 'chartjs-plugin-datalabels';
-import { DashboardChartData } from '../../data';
 import { csvExport } from 'src/app/utility/util';
 
 @Component({

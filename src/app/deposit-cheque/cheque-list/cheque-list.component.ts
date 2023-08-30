@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, debounceTime, distinctUntilChanged, forkJoin, takeUntil } from 'rxjs';
 import { TableColumn, TableConfig } from 'src/app/shared/components/table-advanced';
 import { DepositService } from 'src/app/shared/services/deposit.service';
-import { Category, Users, depositChequeList } from '../data';
 import { DatePipe } from '@angular/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DepositChequeModalComponent } from '../deposit-cheque-modal/deposit-cheque-modal.component';
@@ -252,7 +251,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
  */
   bank: boolean = false;
   amount: boolean = false;
-  displayAmount = 0;
+  displayAmount = new FormControl(0);
   collectionDate: boolean = false;
   dueDate: boolean = false;
 
@@ -285,14 +284,21 @@ export class ChequeListComponent implements OnInit, OnDestroy {
         checkPoint = false;
       }
     }
-    if (!checkPoint && inputValue > 0) {
+    if (!checkPoint && parseFloat(inputValue) > 0) {
       this.tableConfig.filter.Amount = parseFloat(inputValue).toFixed(3);
-      this.displayAmount = parseFloat(parseFloat(inputValue).toFixed(3));
+      this.displayAmount.patchValue(parseFloat(parseFloat(inputValue).toFixed(3)));
       this.page = 1;
       this.sort = 1;
       this.fetchData();
-    } else {
-      this.displayAmount = 0;
+    }
+    else if(inputValue.includes('-')) {
+      this.displayAmount.patchValue(0);
+    }
+    else if(isNaN(parseFloat(inputValue))) {
+      this.displayAmount.patchValue(0);
+    }
+    else if(parseFloat(inputValue) == 0 && !checkPoint) {
+      this.displayAmount.patchValue(0);
     }
   }
   /**
@@ -404,7 +410,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.fetchData();
   }
   removeAmount() {
-    this.displayAmount = 0
+    this.displayAmount.patchValue(0);
     this.amount = false;
     delete this.tableConfig.filter.Amount;
     this.page = 1;

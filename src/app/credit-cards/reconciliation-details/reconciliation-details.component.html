@@ -1,6 +1,6 @@
 <div class="row mt-2">
     <div class="col-lg-12 text-heading">
-        <h5 class="mb-3">Reconciliation Details</h5> 
+        <h5 class="mb-3">Reconciliation Details</h5>
     </div>
 
     <div class="col-md-3">
@@ -12,28 +12,28 @@
         <label class="mb-1 label">Date:</label>
         <p class="P-light">{{ reconciliation && reconciliation[0]?.createdAt ? (reconciliation[0]?.createdAt | date :'dd MMM yyyy') : '-' }}</p>
       </div>
-      
+
       <div class="col-md-3">
         <label class="mb-1 label">Time:</label>
         <p class="P-light">{{ extractedTime | date : 'shortTime' }}</p>
       </div>
-      
+
       <div class="col-md-3" *ngIf="reconciliation">
         <label class="mb-1 label">Reconciliation Amount:</label>
         <p class="P-light">{{ reconciliation[0]?.totalAmount | number : '1.3-3'}} JOD</p>
       </div>
-      
+
       <div class="col-md-3" *ngIf="reconciliation">
         <label class="mb-1 label">Reconciliation Net Amount:</label>
         <p class="P-light">{{ reconciliation[0]?.totalNetAmount | number : '1.3-3' }} JOD</p>
       </div>
-      
+
       <div class="col-md-3">
         <label class="mb-1 label">Reconciliation Number:</label>
         <p class="P-light">{{ reconciliation && reconciliation[0]?.reconciliationHistoryId ? reconciliation[0]?.reconciliationHistoryId : '-' }}</p>
       </div>
-      
-      
+
+
 </div>
 
 <div class="row mt-2">
@@ -63,15 +63,15 @@
                         <button class="btn dropdownFilters" type="button">
                             <input [(ngModel)]="datepickerInput" type="text" (bsValueChange)="onDateValueChange($event)"
                                 placeholder="Select Date" class="form-control" bsDatepicker
-                                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
-                            <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+                                #dp="bsDatepicker"    [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
+                            <img (click)="dp.toggle()" class="calender" src="../../../../assets/images/calendar.png" alt="">
                             <!-- <img class="down" src="../../../../assets/images/down.png" alt=""> -->
                             <i class="fa-regular fa-circle-xmark" *ngIf="datepickerInput"
                                 (click)="removeCollectionDateFilter()"></i>
                         </button>
                     </div>
                 </div>
-            
+
         </div>
     </div>
 </div>

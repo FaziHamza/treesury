@@ -5,6 +5,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { toFilteringUrl } from "../utility";
 import urlJoin from "url-join";
+import { AuthService } from "./auth.service";
 
 
 @Injectable({
@@ -12,7 +13,7 @@ import urlJoin from "url-join";
   })
 
 export class DepositService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private authService : AuthService) {}
     getDepositCheques(filter: any): Observable<ApiResponse> {
 
       const headers = {
@@ -28,7 +29,7 @@ export class DepositService {
       const headers = {
         Authorization: 'Bearer '+localStorage.getItem("token"),
       };
-      return this.http.get<ApiResponse>(environment.apiUrl2+'/Permissions/GetPermissions?portalId='+id,
+      return this.http.get<ApiResponse>(environment.apiUrl2+'/User/GetUserPermissions?userId='+ this.authService.userId +'&portalId='+id,
         { headers }
       );
     }

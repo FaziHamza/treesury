@@ -76,7 +76,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="userDetails?.branch?.branchName"
+                  [value]="userDetails?.register?.branchName"
                   disabled
                 />
               </div>
@@ -98,7 +98,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="userDetails?.register?.id"
+                  [value]="userDetails?.register?.registersId"
                   disabled
                 />
               </div>
@@ -182,11 +182,11 @@
             <div class="form-group overflow-hidden position-relative">
               <label>Start Date</label>
               <input
-                type="date"
+                type="text"
                 class="form-control"
                 placeholder=""
                 disabled
-                [value]="userDetails.contractStartDate"
+                [value]="userDetails.contractStartDate | date : 'dd/MM/yyyy'"
               />
             </div>
           </div>
@@ -194,11 +194,11 @@
             <div class="form-group overflow-hidden position-relative">
               <label>End Date</label>
               <input
-                type="date"
+                type="text"
                 class="form-control"
                 placeholder=" "
                 disabled
-                [value]="userDetails.contractEndDate"
+                [value]="userDetails.contractEndDate | date : 'dd/MM/yyyy'"
               />
             </div>
           </div>

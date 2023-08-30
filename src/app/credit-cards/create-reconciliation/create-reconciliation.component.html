@@ -13,8 +13,8 @@
                         <button class="btn dropdownFilters" type="button">
                             <input [(ngModel)]="datepickerInput" type="text" (bsValueChange)="onDateValueChange($event)"
                                 placeholder="Select Date" class="form-control" bsDatepicker
-                                [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
-                            <img class="calender" src="../../../../assets/images/calendar.png" alt="">
+                                #dp="bsDatepicker"   [bsConfig]="{ containerClass: 'theme-red',isAnimated: true,showClearButton: true}">
+                            <img (click)="dp.toggle()" class="calender" src="../../../../assets/images/calendar.png" alt="">
                             <!-- <img class="down" src="../../../../assets/images/down.png" alt=""> -->
                             <i class="fa-regular fa-circle-xmark" *ngIf="datepickerInput"
                                 (click)="removeCollectionDateFilter()"></i>

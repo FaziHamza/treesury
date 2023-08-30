@@ -1,9 +1,9 @@
 <div class="modal-body">
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-lg-12 text-end">
       <span (click)="dismissModal()"><i class="fa-solid fa-xmark fa-2xl text-danger"></i></span>
     </div>
-  </div>
+  </div> -->
   <div class="page-heading">
     <div>
       <h5>
@@ -14,7 +14,7 @@
       <span>{{title}} By: <span class="soft-text"> {{details?.createdBy?.fullName}}</span></span>
       <span class="last-content">
         {{title == 'Returned' ? 'Return Date: ' : title == 'Collected' ? 'Collection Date: ' :  title == 'Re-deposited' ? 'Re-deposit Date: ' : title }}:
-        <span class="soft-text"> {{details?.chequeDate | date : 'dd/MM/yyyy'}}</span></span>
+        <span class="soft-text"> {{details?.createdAt | date : 'dd/MM/yyyy'}}</span></span>
     </span>
   </div>
 

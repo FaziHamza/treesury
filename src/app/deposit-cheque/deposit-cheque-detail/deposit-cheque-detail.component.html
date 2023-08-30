@@ -93,7 +93,7 @@
           <p *ngIf="!depositeDetail?.chequeDate">---</p>
         </div>
         <div class="col-lg-2">
-          <p *ngIf="depositeDetail?.chequeCollectionJod">{{depositeDetail?.chequeCollectionJod}} JOD</p>
+          <p *ngIf="depositeDetail?.chequeCollectionJod">{{depositeDetail?.chequeCollectionJod | number : '1.3-3'}} JOD</p>
           <p *ngIf="!depositeDetail?.chequeCollectionJod">---</p>
         </div>
         <div class="col-lg-2">
@@ -117,13 +117,14 @@
       <div class="wizard-form wizard-form2">
         <ul id="progressBar" class="progressbar">
           <li *ngFor="let step of steps; let i = index" [id]="'progressList-' + (i+1)"
-            class="d-inline-block fw-bold position-relative text-center float-start progressbar-list hand-cursor"
-            [ngClass]="{'active': activeTabs(step)}" (click)="depositDetailModal(step)">
+            class="d-inline-block fw-bold position-relative text-center float-start progressbar-list "
+            [ngClass]="{'active hand-cursor ': activeTabs(step)}" (click)="depositDetailModal(step)">
             <div class="step-image">
               <span [style.backgroundImage]="'url(' + step?.imagePath + ')'" [style.backgroundRepeat]="'no-repeat'"
                 [style.backgroundSize]="'contain'"></span>
             </div>
-            {{step?.name?.[0].lookupName}}
+            <span
+              [ngClass]="{'active hand-cursor display-underline': activeTabs(step)}">{{step?.name?.[0].lookupName}}</span>
           </li>
         </ul>
 
@@ -136,9 +137,9 @@
       <div class="wizard-content banner-slider">
         <div class="top-heading">
           <h5>V1 Cheque Image </h5>
-          <p class="btn" [style.color]="depositeDetail?.statusObj?.lookupTextColor"
+          <button class="btn" disabled [style.color]="depositeDetail?.statusObj?.lookupTextColor"
             [style.background-color]="depositeDetail?.statusObj?.lookupBGColor">{{depositeDetail &&
-            depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</p>
+            depositeDetail?.statusObj.translations ? depositeDetail?.statusObj.translations?.[0]?.lookupName : '-'}}</button>
         </div>
         <div class="no-image-display" *ngIf="depositeDetail?.chequeImages.length == 0">
           <img
@@ -154,24 +155,33 @@
               data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
               [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i+1)"></button>
           </div>
-          <div class="carousel-inner">
-
-            <div *ngFor="let image of depositeDetail?.chequeImages; let i = index" class="carousel-item"
-              [class.active]="i === 0">
-
-              <img [src]="image?.imagePath" class="d-block w-100" alt="...">
+          <div class="row">
+            <div class="col-lg-1">
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+            </div>
+            <div class="col-lg-10">
+              <div class="carousel-inner">
+                <div *ngFor="let image of depositeDetail?.chequeImages; let i = index" class="carousel-item"
+                  [class.active]="i === 0">
+                  <img [src]="image?.imagePath" class="d-block w-100" alt="...">
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-1">
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
+
+
+
         </div>
 
         <!-- <div *ngFor="let step of steps; let i = index" [hidden]="current !== i">
