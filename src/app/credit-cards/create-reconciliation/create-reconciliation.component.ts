@@ -62,19 +62,18 @@ export class CreateReconciliationComponent {
     this.initTableColumns();
     this.fetcAllData();
     this.getData()
-
-
     this.netAmount.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.unsubscribe))
       .subscribe(value => {
         const text: string = value || '';
         if (text?.length >= 2 || (!text?.length && this.tableConfig.filter.NetAmount?.length)) {
           this.tableConfig.filter.NetAmount = text;
+          this.selectedAmount = 0;
+          this.selecteddata = [];
           this.page = 1;
           this.fetcAllData();
         }
       });
-
   }
 
 
@@ -169,21 +168,27 @@ export class CreateReconciliationComponent {
       }
     ];
   }
-
+  selecteddata: any[] = [];
   fetcAllData() {
-    this.reconciliation = [];
-
     this.loading = true;
-    this.tableConfig.filter.PageNo = 0;
+    // this.tableConfig.filter.PageNo = 0;
     this.tableConfig.filter.PageNo = this.page - 1;
-    this.tableConfig.filter.Status = 30001
+    this.tableConfig.filter.Status = 30001;
+
     this.creditcardservice.GetReconHistory(this.tableConfig.filter).subscribe(result => {
       if (result) {
         this.reconciliation = result.data || []
         console.log(">", this.reconciliation)
         this.totalAllRecordsCount = result?.totalRecordCount;
         this.total = result?.totalRecordCount;
-        this.page = 1;
+        if (this.selecteddata.length > 0) {
+          this.reconciliation.forEach((element: any) => {
+            let findElement = this.selecteddata.find(elem => elem.ordersCardsCollectionId == element.ordersCardsCollectionId);
+            if (findElement)
+              element.checked = true;
+          });
+        }
+        // this.page = 1;
         // this.totalAllRecordsCount = result?.totalRecordCount;
       }
     })
@@ -234,13 +239,13 @@ export class CreateReconciliationComponent {
 
   onPageChange(page: number) {
     this.page = page;
-    // this.fetchData();
+    this.fetcAllData();
   }
 
   removeSearchChequeNo() {
     this.searchChequeNo = '';
     this.sort = 1;
-    // this.fetchData();
+    this.fetcAllData();
   }
 
   searchCheque(event: any) {
@@ -248,17 +253,17 @@ export class CreateReconciliationComponent {
     if (text.length >= 2) {
       this.searchChequeNo = text;
       this.page = 0;
-      // this.fetchData();
+      this.fetcAllData();
     }
     if (text.length == 0) {
-      // this.fetchData();
+      this.fetcAllData();
     }
   }
 
   removeSearchCustomerNo() {
     this.searchCustomerNo = '';
     this.sort = 1;
-    // this.fetchData();
+    this.fetcAllData();
   }
 
   searchCustomer(event: any) {
@@ -266,10 +271,10 @@ export class CreateReconciliationComponent {
     if (text.length >= 2) {
       this.searchCustomerNo = text;
       this.page = 0;
-      // this.fetchData();
+      this.fetcAllData();
     }
     if (text.length == 0) {
-      // this.fetchData();
+      this.fetcAllData();
     }
   }
 
@@ -279,28 +284,39 @@ export class CreateReconciliationComponent {
     console.log(this.startDate);
     if (this.startDate) {
       const fromDate = new Date(this.startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
       const formattedFromDate = fromDate.toISOString();
       this.tableConfig.filter.CollectionDate = formattedFromDate;
+
     } else
       this.tableConfig.filter.CollectionDate = this.startDate;
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     this.fetcAllData();
   }
 
   onDueDateValueChange(event: any) {
     var pipe = new DatePipe('en-US');
     this.startDate = pipe.transform(event) || '';
-    // this.fetchData();
+    this.fetcAllData();
   }
 
   removeCollectionDateFilter() {
     (this.startDate = '');
     if (this.datepickerInput)
       this.datepickerInput = '';
-    // this.fetchData();
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
+    this.fetcAllData();
   }
   removeNetAmountFilter() {
     this.netAmount.setValue(null);
     this.tableConfig.filter.NetAmount = '';
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     this.fetcAllData();
   }
 
@@ -350,19 +366,26 @@ export class CreateReconciliationComponent {
   onClear() {
     delete this.tableConfig.filter.providerId;
     // this.statusId = null;
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     this.fetcAllData();
   }
 
   handleCategoryChange(event: any) {
     this.tableConfig.filter.providerId = event.providerId;
-
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     // this.statusId = event?.id;
     this.fetcAllData();
   }
 
   handleCardType(event: any) {
     this.tableConfig.filter.CardTypeId = event.id;
-
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     // this.statusId = event?.id;
     this.fetcAllData();
   }
@@ -383,6 +406,9 @@ export class CreateReconciliationComponent {
 
     delete this.tableConfig.filter.CardTypeId;
     // this.statusId = null;
+    this.selectedAmount = 0;
+    this.selecteddata = [];
+    this.page = 1;
     this.fetcAllData();
   }
   erromessage: any

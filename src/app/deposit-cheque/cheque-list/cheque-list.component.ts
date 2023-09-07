@@ -53,6 +53,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
         if (text?.length >= 3 || (!text?.length && this.tableConfig.filter.ChequeNo?.length)) {
           this.tableConfig.filter.ChequeNo = text;
           this.page = 1;
+          this.selecteddata = [];
           this.fetchData();
         }
       });
@@ -62,6 +63,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
         const text: string = value || '';
         if (text?.length >= 3 || (!text?.length && this.tableConfig.filter.Customer?.length)) {
           this.tableConfig.filter.Customer = text;
+          this.selecteddata = [];
           this.page = 1;
           this.fetchData();
         }
@@ -81,9 +83,14 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       .getDepositCheques(this.tableConfig.filter)
       .subscribe(result => {
         if (result) {
-          this.selecteddata = [];
           this.makeListData(result.data || []);
-
+          if (this.selecteddata.length > 0) {
+            this.deposites.forEach((element: any) => {
+              let findElement = this.selecteddata.find(elem => elem.id == element.id);
+              if (findElement)
+                element.checked = true;
+            });
+          }
           this.totalAllRecordsCount = result?.totalRecordCount;
           this.total = result?.totalRecordCount;
         }
@@ -185,11 +192,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     return '';
   }
   onSelectData(selectedData: any) {
-    for (const [Index, iterator] of selectedData.entries()) {
-      this.selecteddata.push(iterator.id)
-    }
-    if (selectedData.length == 0)
-      this.selecteddata = [];
+
   }
   selecteddata: any[] = [];
   getSelectedItem(data: any, event: any): any {
@@ -197,32 +200,34 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       this.sort = 1;
       this.page = 1;
       if (this.tableConfig.filter.Status != data.status) {
+        this.selecteddata.push(data);
         this.tableConfig.filter.Status = data.status;
         this.fetchData();
       } else
-        this.selecteddata.push(data?.id);
+        this.selecteddata.push(data);
     }
-    if (event.target.checked) {
-      this.selecteddata.push(data?.id);
+    else if (event.target.checked) {
+      this.selecteddata.push(data);
     } else {
-      let index = this.selecteddata.indexOf(data?.id);
-      this.selecteddata.splice(index, 1);
+      const index = this.selecteddata.findIndex(selectedDataItem => {
+        return this.areObjectsEqual(selectedDataItem, data);
+      });
+      if (index !== -1) {
+        this.selecteddata.splice(index, 1);
+      }
     }
+  }
+  areObjectsEqual(obj1: any, obj2: any) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
   showMultiSelect = false;
   multiSelect() {
     this.showMultiSelect = true;
   }
-  checkAllCheckBox(ev: any) {
-    if (ev.target.checked) {
-    } else {
-      this.selecteddata = [];
-    }
-
-  }
   removeSearch() {
     this.searchText.setValue(null);
     this.sort = 1;
+    this.selecteddata = [];
     this.page = 1;
     delete this.tableConfig.filter.Customer;
     this.fetchData();
@@ -231,6 +236,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.searchChequeText.setValue(null);
     this.sort = 1;
     this.page = 1;
+    this.selecteddata = [];
     delete this.tableConfig.filter.ChequeNo;
     this.fetchData();
   }
@@ -238,11 +244,16 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   handleCategoryChange(event: any) {
     this.tableConfig.filter.Status = event.id;
     // this.statusId = event?.id;
+    this.sort = 1;
+    this.page = 1;
+    this.selecteddata = [];
     this.fetchData();
   }
   onClear() {
     delete this.tableConfig.filter.Status;
     // this.statusId = null;
+    this.selecteddata = [];
+    this.page = 1;
     this.fetchData();
   }
 
@@ -288,16 +299,17 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       this.tableConfig.filter.Amount = parseFloat(inputValue).toFixed(3);
       this.displayAmount.patchValue(parseFloat(parseFloat(inputValue).toFixed(3)));
       this.page = 1;
+      this.selecteddata = [];
       this.sort = 1;
       this.fetchData();
     }
-    else if(inputValue.includes('-')) {
+    else if (inputValue.includes('-')) {
       this.displayAmount.patchValue(0);
     }
-    else if(isNaN(parseFloat(inputValue))) {
+    else if (isNaN(parseFloat(inputValue))) {
       this.displayAmount.patchValue(0);
     }
-    else if(parseFloat(inputValue) == 0 && !checkPoint) {
+    else if (parseFloat(inputValue) == 0 && !checkPoint) {
       this.displayAmount.patchValue(0);
     }
   }
@@ -353,27 +365,27 @@ export class ChequeListComponent implements OnInit, OnDestroy {
 
   }
   makeActionList() {
-    // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const secondArrayLookupNames = ["Re-deposit", "Replace"];
+
+    const firstArrayLookupNames = [29002, 29003, 29001, 29006];
+    const secondArrayLookupNames = [29004, 29003];
     this.firstActionList = this.actionList.filter(item =>
-      firstArrayLookupNames.includes(item.name[0]?.lookupName)
+      firstArrayLookupNames.includes(item.id)
     );
     this.secondActionList = this.actionList.filter(item =>
-      secondArrayLookupNames.includes(item.name[0]?.lookupName)
+      secondArrayLookupNames.includes(item.id)
     );
   }
 
   depositDetail(item: any, row: any) {
-    if (item?.name?.[0].lookupName == 'Return')
+    if (item?.id == 29002)
       this.openModalTrigger(item, row, 'Returned Cheque Details View', true, true)
-    else if (item?.name?.[0].lookupName == 'Bounce')
+    else if (item?.id == 29001)
       this.openModalTrigger(item, row, 'Bounce Cheque', true, true)
-    else if (item?.name?.[0].lookupName == 'Replace')
+    else if (item?.id == 29003)
       this.replace(item, row)
-    else if (item?.name?.[0].lookupName == 'Re-deposit')
+    else if (item?.id == 29004)
       this.openModalTrigger(item, row, 'Re-deposited Cheque Details View', true, true)
-    else if (item?.name?.[0].lookupName == 'Collect')
+    else if (item?.id == 29006)
       this.openModalTrigger(item, row, 'Collect Cheque', true, false)
     else if (item?.name?.[0].lookupName == 'replace-view')
       this.replaceView()
@@ -388,6 +400,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     delete this.tableConfig.filter.BankId;
     this.bank = false;
     this.page = 1;
+    this.selecteddata = [];
     this.sort = 1;
     this.fetchData();
   }
@@ -396,6 +409,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.collectionDate = false;
     delete this.tableConfig.filter.FromDate;
     delete this.tableConfig.filter.ToDate;
+    this.selecteddata = [];
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -405,6 +419,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.dueDate = false;
     delete this.tableConfig.filter.FromDueDate;
     delete this.tableConfig.filter.ToDueDate;
+    this.selecteddata = [];
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -414,6 +429,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     this.amount = false;
     delete this.tableConfig.filter.Amount;
     this.page = 1;
+    this.selecteddata = [];
     this.sort = 1;
     this.fetchData();
   }
@@ -436,6 +452,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
       );
     }
     this.tableConfig.filter.BankId = this.dropDownbankId;
+    this.selecteddata = [];
     this.page = 1;
     this.fetchData();
   }
@@ -446,6 +463,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     let endDate = pipe.transform(event[1]) || '';
     this.tableConfig.filter.FromDate = startDate;
     this.tableConfig.filter.ToDate = endDate;
+    this.selecteddata = [];
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -455,8 +473,23 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     var pipe = new DatePipe('en-US');
     let startDate = pipe.transform(event[0]) || '';
     let endDate = pipe.transform(event[1]) || '';
-    this.tableConfig.filter.FromDueDate = startDate;
-    this.tableConfig.filter.ToDueDate = endDate;
+    if (startDate) {
+      const fromDate = new Date(startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.FromDueDate = formattedFromDate;
+
+    } else
+        this.tableConfig.filter.FromDueDate = startDate;
+    if (endDate) {
+      const fromDate = new Date(endDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
+      const formattedFromDate = fromDate.toISOString();
+      this.tableConfig.filter.ToDueDate = formattedFromDate;
+
+    } else
+         this.tableConfig.filter.ToDueDate = endDate;
+    this.selecteddata = [];
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -464,6 +497,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
 
   IsPDCFilter(IsPDC: any) {
     this.tableConfig.filter.IsPDC = IsPDC;
+    this.selecteddata = [];
     this.page = 1;
     this.sort = 1;
     this.fetchData();
@@ -473,7 +507,7 @@ export class ChequeListComponent implements OnInit, OnDestroy {
     let listArray: any[] = [];
     if (this.showMultiSelect) {
       this.selecteddata.forEach(element => {
-        const data = this.deposites.find((a: any) => a.id === element);
+        const data = this.deposites.find((a: any) => a.id === element.id);
         listArray.push(data);
       });
     } else
@@ -536,8 +570,12 @@ export class ChequeListComponent implements OnInit, OnDestroy {
   canPerformAction(catId: number, subCatId: number, perItemName: number) {
     return this.permission.checkPermission(catId, subCatId, perItemName);
   }
-  multi(){
+  multi() {
     this.showMultiSelect = false
     this.selecteddata = [];
+    this.page = 1;
+    this.sort = 1;
+    delete this.tableConfig.filter.Status;
+    this.fetchData();
   }
 }

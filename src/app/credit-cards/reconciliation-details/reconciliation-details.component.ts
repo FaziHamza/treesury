@@ -164,7 +164,7 @@ export class ReconciliationDetailsComponent {
           this.tableConfig.filter.Sort = sort.direction === 'desc' ? 7 : 6;
           break;
         case 'machineReceiptNumber':
-          this.tableConfig.filter.Sort = sort.direction === 'desc' ? 9: 8;
+          this.tableConfig.filter.Sort = sort.direction === 'desc' ? 9 : 8;
           break;
 
         case 'createdAt':
@@ -201,6 +201,7 @@ export class ReconciliationDetailsComponent {
   removeSearchChequeNo() {
     this.searchChequeNo = '';
     this.sort = 1;
+    this.page = 1;
     this.fetchData();
   }
 
@@ -212,6 +213,7 @@ export class ReconciliationDetailsComponent {
       this.fetchData();
     }
     if (text.length == 0) {
+      this.page = 1;
       this.fetchData();
     }
   }
@@ -219,6 +221,7 @@ export class ReconciliationDetailsComponent {
   removeSearchCustomerNo() {
     this.searchCustomerNo = '';
     this.sort = 1;
+    this.page = 1;
     this.fetchData();
   }
 
@@ -230,6 +233,7 @@ export class ReconciliationDetailsComponent {
       this.fetchData();
     }
     if (text.length == 0) {
+      this.page = 1;
       this.fetchData();
     }
   }
@@ -240,23 +244,13 @@ export class ReconciliationDetailsComponent {
     console.log(this.startDate);
     if (this.startDate) {
       const fromDate = new Date(this.startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
       const formattedFromDate = fromDate.toISOString();
       this.tableConfig.filter.CollectionDate = formattedFromDate;
-    } else
-      this.tableConfig.filter.CollectionDate = this.startDate;
-    this.GetReconciliationTable(this.reconsilationstepid)
-  }
 
-  onDueDateValueChange(event: any) {
-    var pipe = new DatePipe('en-US');
-    this.startDate = pipe.transform(event) || '';
-    console.log(this.startDate);
-    if (this.startDate) {
-      const fromDate = new Date(this.startDate);
-      const formattedFromDate = fromDate.toISOString();
-      this.tableConfig.filter.CollectionDate = formattedFromDate;
     } else
       this.tableConfig.filter.CollectionDate = this.startDate;
+    this.page = 1;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 
@@ -264,6 +258,7 @@ export class ReconciliationDetailsComponent {
     (this.startDate = '');
     if (this.datepickerInput)
       this.datepickerInput = '';
+    this.page = 1;
     this.fetchData();
   }
 
@@ -302,18 +297,21 @@ export class ReconciliationDetailsComponent {
 
     this.tableConfig.filter.providerId = event.providerId;
     // this.statusId = event?.id;
+    this.page = 1;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 
   onClear() {
     delete this.tableConfig.filter.providerId;
     // this.statusId = null;
+    this.page = 1;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 
   removeFourDigit() {
     this.searchChequeText.setValue(null);
     this.tableConfig.filter.Last4digits = '';
+    this.page = 1;
     this.GetReconciliationTable(this.reconsilationstepid)
   }
 }

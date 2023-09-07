@@ -28,11 +28,11 @@ cardsData:any ={}
   ngOnDestroy() {
    }
    Getdashbord() {
-    const api1$ = this.depositService. GetDashboardCard()
+    const api1$ = this.depositService.GetDashboardCard()
     forkJoin([api1$ ]).subscribe(
       ([result1]) => {
         if (result1) {
-          console.log("result1",result1);      
+          console.log("result1",result1);
           this.cardsData ={...result1}
         }
       })

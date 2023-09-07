@@ -51,13 +51,14 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder=""
+                    placeholder="7 9012 3456"
                     libTelInput
                     [libTelInputOptions]="{
                       initialCountry: 'jo',
                       preferredCountries: ['jo', 'sa']
                     }"
                     formControlName="mobile"
+                    (input)="limitMobileLength()"
                     numbersOnly
                   />
                 </div>
@@ -69,6 +70,14 @@
                   (click)="editMobile()"
                 ></app-edit-icon>
               </div>
+              <div *ngIf="formValid['mobile'].invalid">
+                <div class="error" *ngIf="formValid['mobile']?.errors?.['required']">
+                  Phone Number is required
+                </div>
+                <span class="error"  *ngIf="form.get('mobile')?.hasError('minlength')">
+                 Minimum 9 Digit required
+                </span>
+              </div>
             </div>
             <div class="col-md-4">
               <div class="form-group overflow-hidden position-relative">
@@ -76,7 +85,7 @@
                 <input
                   type="text"
                   class="form-control"
-                  [value]="userDetails?.register?.branchName"
+                  [value]="userDetails?.branch?.branchName"
                   disabled
                 />
               </div>

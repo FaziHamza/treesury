@@ -71,7 +71,25 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
             this.activityLog.push(getFirstIndex);
         }
         if (result2) {
-          this.steps = result2.data || [];
+          const array1Map = new Map(this.masterActivityLog.map(item => [item.statusId, item]));
+
+          // Sort array2 based on the sequence in array1, keeping all items from array2
+          const matchingItems = result2.data.filter((item:any) => {
+            const aStatusId = item.id;
+            return array1Map.has(aStatusId);
+          });
+
+          const sortedArray2 = matchingItems.sort((a:any, b:any) => {
+            const aStatusId = a.id;
+            const bStatusId = b.id;
+
+            const aItemInArray1 = array1Map.get(aStatusId);
+            const bItemInArray1 = array1Map.get(bStatusId);
+
+            return this.masterActivityLog.indexOf(aItemInArray1) - this.masterActivityLog.indexOf(bItemInArray1);
+          });
+
+          this.steps = sortedArray2 || [];
         }
         if (result3) {
           this.actionList = result3.data || [];
@@ -90,25 +108,25 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
   secondActionList: any[] = [];
   makeActionList() {
     // const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const firstArrayLookupNames = ["Return", "Replace", "Bounce", "Collect"];
-    const secondArrayLookupNames = ["Re-deposit", "Replace"];
+    const firstArrayLookupNames = [29002, 29003, 29001, 29006];
+    const secondArrayLookupNames = [29004, 29003];
     this.firstActionList = this.actionList.filter(item =>
-      firstArrayLookupNames.includes(item.name[0]?.lookupName)
+      firstArrayLookupNames.includes(item.id)
     );
     this.secondActionList = this.actionList.filter(item =>
-      secondArrayLookupNames.includes(item.name[0]?.lookupName)
+      secondArrayLookupNames.includes(item.id)
     );
   }
   depositDetail(item: any) {
-    if (item?.name?.[0].lookupName == 'Return')
+    if (item?.id == 29002)
       this.openModalTrigger(item, 'Returne Cheque', true, true)
-    else if (item?.name?.[0].lookupName == 'Bounce')
+    else if (item?.id == 29001)
       this.openModalTrigger(item, 'Bounce Cheque', true, true)
-    else if (item?.name?.[0].lookupName == 'Replace')
+    else if (item?.id == 29003)
       this.replace(item)
-    else if (item?.name?.[0].lookupName == 'Re-deposit')
+    else if (item?.id == 29004)
       this.openModalTrigger(item, 'Re-deposited Cheque', true, true)
-    else if (item?.name?.[0].lookupName == 'Collect')
+    else if (item?.id == 29006)
       this.openModalTrigger(item, 'Collect Cheque', true, false)
   }
   openModalTrigger(actionType: any, item: any, confirm: boolean, detailShow: boolean): void {
@@ -139,17 +157,17 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
         .subscribe({
           next: response => {
             if (response.isSuccess) {
-              if (findStatus?.action?.[0].lookupName == 'Return')
+              if (findStatus?.actionId == 29002)
                 this.openDetailModal(response.data, 'Returned', true, true)
-              else if (findStatus?.action?.[0].lookupName == 'Bounce')
+              else if (findStatus?.actionId == 29001)
                 this.openDetailModal(response.data, 'Bounced', true, true)
-              else if (findStatus?.action?.[0].lookupName == 'Replace')
+              else if (findStatus?.actionId == 29003)
                 this.replaceView(response.data)
-              else if (findStatus?.action?.[0].lookupName == 'Re-deposit')
+              else if (findStatus?.actionId == 29004)
                 this.openDetailModal(response.data, 'Re-deposited', true, true)
-              else if (findStatus?.action?.[0].lookupName == "Deposite")
+              else if (findStatus?.actionId == 29010)
                 this.openDetailModal(response.data, 'Deposited', true, false)
-              else if (findStatus?.action?.[0].lookupName == 'Collect')
+              else if (findStatus?.actionId == 29006)
                 this.openDetailModal(response.data, 'Collected', true, false)
             } else {
               const errorsList = response?.errors;
@@ -216,13 +234,13 @@ export class DepositChequeDetailComponent implements OnInit, OnDestroy {
       };
       let obj = {
         id: 1,
-        name: 'V2 Replace Cheque Detail',
+        name: 'V2 Replace Cheque Details',
         children: [replacedCheque]
       }
       updateData.push(obj);
       let obj1 = {
         id: 2,
-        name: 'V1 Cheque Detail',
+        name: 'V1 Cheque Details',
         children: [data]
       }
       updateData.push(obj1);

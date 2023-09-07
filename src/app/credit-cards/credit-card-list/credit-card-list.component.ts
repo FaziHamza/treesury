@@ -20,8 +20,10 @@ export class CreditCardListComponent {
   searchChequeText = new FormControl(null);
   searchText = new FormControl(null);
   amountchange = new FormControl(null);
+  SessionNumberchange = new FormControl(null);
   netamountchange = new FormControl(null);
   unsubscribe = new Subject<void>();
+  CommissionRatiochange = new FormControl(0);
 
   // Other variables
   datepickerInput: any;
@@ -96,6 +98,20 @@ export class CreditCardListComponent {
         const text: string = value || '';
         if (text?.length >= 0 || (!text?.length && this.tableConfig.filter.Amount?.length)) {
           this.tableConfig.filter.Amount = text;
+          this.page = 1;
+          this.gettable();
+        }
+      });
+
+    this.SessionNumberchange.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.unsubscribe))
+      .subscribe(value => {
+        // Update the Amount filter and refresh the table
+        const text: string = value || '';
+        if (text?.length >= 0 || (!text?.length && this.tableConfig.filter.SessionNumber?.length)) {
+          let checktext = parseFloat(text);
+          if (!isNaN(checktext))
+            this.tableConfig.filter.RegisterSessionId = checktext;
           this.page = 1;
           this.gettable();
         }
@@ -312,46 +328,62 @@ export class CreditCardListComponent {
   removelast4Filter() {
     this.searchChequeText.setValue(null);
     this.tableConfig.filter.Last4digits = '';
+    this.page = 1;
     this.gettable();
   }
   removebankFilter() {
     this.newDropdownbank = [];
     this.dropDownbankId = [];
     this.bank = false;
+    this.page = 1;
     this.gettable();
   }
 
   removeInvoiceFilter() {
     this.searchText.setValue(null);
     this.tableConfig.filter.MachineReceipt = '';
+    this.page = 1;
     this.gettable();
   }
 
   removeCommissionFilter() {
     this.Commission = false;
+    this.CommissionRatiochange.setValue(0);
+    this.tableConfig.filter.Commission = '';
+    this.page = 1;
     this.gettable();
   }
 
   removeAmountFilter() {
     this.amountchange.setValue(null);
     this.tableConfig.filter.Amount = '';
+    this.page = 1;
+    this.gettable();
+  }
+  removeSectionFilter() {
+    this.SessionNumberchange.setValue(null);
+    this.tableConfig.filter.RegisterSessionId = '';
+    this.page = 1;
     this.gettable();
   }
 
   removeNetAmountFilter() {
     this.netamountchange.setValue(null);
     this.tableConfig.filter.NetAmount = '';
+    this.page = 1;
     this.gettable();
   }
 
   removeBranchNameFilter() {
     this.BranchName = false;
     this.branch = '';
+    this.page = 1;
     this.gettable();
   }
 
   removeRegisterNameFilter() {
     this.RegisterName = false;
+    this.page = 1;
     this.gettable();
   }
 
@@ -361,6 +393,7 @@ export class CreditCardListComponent {
   BranchName: boolean = false;
   NetAmount: boolean = false;
   Amount: boolean = false;
+  SessionNumber: boolean = false;
   Commission: boolean = false;
   Invoice: boolean = false;
   statusId: any;
@@ -371,6 +404,7 @@ export class CreditCardListComponent {
     if (!this.RegisterName) {
       this.RegisterName = false
       delete this.tableConfig.filter.RegisterId;
+      this.page = 1;
       this.gettable();
 
     }
@@ -380,6 +414,7 @@ export class CreditCardListComponent {
     if (!this.BranchName) {
       this.BranchName = false
       delete this.tableConfig.filter.BranchId;
+      this.page = 1;
       this.gettable();
 
     }
@@ -390,6 +425,7 @@ export class CreditCardListComponent {
       this.NetAmount = false
       this.netamountchange.setValue(null);
       this.tableConfig.filter.netamountchange = '';
+      this.page = 1;
       this.gettable();
     }
   }
@@ -399,11 +435,29 @@ export class CreditCardListComponent {
       this.Amount = false
       this.amountchange.setValue(null);
       this.tableConfig.filter.amountchange = '';
+      this.page = 1;
+      this.gettable();
+    }
+  }
+  filterSessionNumber(event: any) {
+    this.SessionNumber = event.checked;
+    if (!this.SessionNumber) {
+      this.SessionNumber = false
+      this.SessionNumberchange.setValue(null);
+      this.tableConfig.filter.RegisterSessionId = '';
+      this.page = 1;
       this.gettable();
     }
   }
   filterCommission(event: any) {
     this.Commission = event.checked;
+    if (!this.Commission) {
+      this.Commission = false
+      this.CommissionRatiochange.setValue(null);
+      this.tableConfig.filter.Commission = '';
+      this.page = 1;
+      this.gettable();
+    }
   }
   filterInvoice(event: any) {
     this.Invoice = event.checked;
@@ -411,6 +465,7 @@ export class CreditCardListComponent {
       this.Invoice = false
       this.searchText.setValue(null);
       this.tableConfig.filter.searchText = '';
+      this.page = 1;
       this.gettable();
     }
   }
@@ -421,15 +476,19 @@ export class CreditCardListComponent {
     console.log(this.startDate);
     if (this.startDate) {
       const fromDate = new Date(this.startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
       const formattedFromDate = fromDate.toISOString();
       this.tableConfig.filter.CollectionDate = formattedFromDate;
+
     } else
       this.tableConfig.filter.CollectionDate = this.startDate;
+    this.page = 1;
     this.gettable();
   }
 
   removeCollectionDateFilter() {
     delete this.tableConfig.filter.CollectionDate
+    this.page = 1;
     this.datepickerInput = null
     this.gettable();
   }
@@ -438,44 +497,102 @@ export class CreditCardListComponent {
     console.log('bhushan ==>', event.providerId);
 
     this.tableConfig.filter.providerId = event.providerId;
+    this.page = 1;
     // this.statusId = event?.id;
     this.gettable();
   }
 
   handleCategoryChange2(event: any) {
     this.tableConfig.filter.CardTypeId = event.id;
+    this.page = 1;
     // this.statusId = event?.id;
     this.gettable();
   }
+  newDropdownbranch: any = [];
+  dropDownbranchId: any[] = [];
 
-  handleCategoryChange3(event: any) {
-    this.tableConfig.filter.BranchId = event.branchId;
+  handleCategoryChange3(item: any, event: any) {
+    const obj4 = item.branchName;
+    const branchId = item.branchId;
+    if (event.target.checked) {
+      // checking if the checkbox has been checked
+
+      this.newDropdownbranch.push(obj4); // pushing object to newArray[]
+      this.dropDownbranchId.push(branchId); // pushing object to newArray[]
+    } else {
+      this.newDropdownbranch = this.newDropdownbranch.filter(
+        (v: any) => v !== obj4
+      ); // if the checkbox has been unchecked removing the object from the array
+
+      this.dropDownbranchId = this.dropDownbranchId.filter(
+        (x) => x !== branchId
+      );
+    }
+    this.tableConfig.filter.BranchId = this.dropDownbranchId;
+    this.page = 1;
     // this.statusId = event?.id;
     this.gettable();
   }
+  removebranchFilter() {
+    this.newDropdownbranch = [];
+    this.dropDownbranchId = [];
+    this.tableConfig.filter.BranchId = [];
+    this.BranchName = false;
+    this.page = 1;
+    this.gettable();
+  }
+  newDropdownregister: any = [];
+  dropDownregisterId: any[] = [];
+  handleCategoryChange4(item: any, event: any) {
+    const obj4 = item.registersName;
+    const id = item.id;
+    if (event.target.checked) {
+      // checking if the checkbox has been checked
 
-  handleCategoryChange4(event: any) {
-    this.tableConfig.filter.RegisterId = event.id;
+      this.newDropdownregister.push(obj4); // pushing object to newArray[]
+      this.dropDownregisterId.push(id); // pushing object to newArray[]
+    } else {
+      this.newDropdownregister = this.newDropdownregister.filter(
+        (v: any) => v !== obj4
+      ); // if the checkbox has been unchecked removing the object from the array
+
+      this.dropDownregisterId = this.dropDownregisterId.filter(
+        (x) => x !== id
+      );
+    }
+    this.tableConfig.filter.RegisterId = this.dropDownregisterId;
+    this.page = 1;
     // this.statusId = event?.id;
     this.gettable();
   }
-
+  removeregisterFilter() {
+    this.newDropdownregister = [];
+    this.dropDownregisterId = [];
+    this.tableConfig.filter.RegisterId = [];
+    this.RegisterName = false;
+    this.page = 1;
+    this.gettable();
+  }
   onClear() {
     delete this.tableConfig.filter.BranchId;
+    this.page = 1;
     this.gettable();
   }
 
   onClearR() {
     delete this.tableConfig.filter.RegisterId;
+    this.page = 1;
     this.gettable();
   }
   onClearcard() {
     delete this.tableConfig.filter.CardTypeId;
+    this.page = 1;
     this.gettable();
   }
   IsPDCFilter(value: any) {
     this.tableConfig.filter.Status = value;
     // this.statusId = event?.id;
+    this.page = 1;
     this.gettable();
   }
 
@@ -485,7 +602,42 @@ export class CreditCardListComponent {
   }
   onClearprovider() {
     delete this.tableConfig.filter.providerId
+    this.page = 1;
     this.gettable();
+  }
+  inputvalue(value: any) {
+    let checkPoint = false;
+    const inputValue = value?.target?.value;
+    if (inputValue && inputValue.includes('.')) {
+      const parts = inputValue.split('.');
+      if (parts.length === 2 && parts[1].length > 0) {
+        if (inputValue === '0.0')
+          checkPoint = true;
+        else if (inputValue === '0.00')
+          checkPoint = true;
+        else checkPoint = false;
+      } else if (parts.length === 2 && parts[1].length === 0) {
+        checkPoint = true;
+      } else {
+        checkPoint = false;
+      }
+    }
+    if (!checkPoint && parseFloat(inputValue) > 0) {
+      this.tableConfig.filter.Commission = parseFloat(inputValue).toFixed(3);
+      this.CommissionRatiochange.patchValue(parseFloat(parseFloat(inputValue).toFixed(3)));
+      this.page = 1;
+      this.sort = 1;
+      this.gettable();
+    }
+    else if (inputValue.includes('-')) {
+      this.CommissionRatiochange.patchValue(0);
+    }
+    else if (isNaN(parseFloat(inputValue))) {
+      this.CommissionRatiochange.patchValue(0);
+    }
+    else if (parseFloat(inputValue) == 0 && !checkPoint) {
+      this.CommissionRatiochange.patchValue(0);
+    }
   }
   validateInput(event: any) {
     const enteredValue = event.target.value;
@@ -494,4 +646,25 @@ export class CreditCardListComponent {
       event.target.value = enteredValue.replace(/[^0-9.]/g, ''); // Remove any invalid characters
     }
   }
+  validateNumberInput(event: any) {
+    const enteredValue = event.target.value;
+    const pattern = /^[1-9]\d*$/; // Regex pattern to allow positive integers
+    if (!pattern.test(enteredValue)) {
+      event.target.value = enteredValue.replace(/[^1-9]/g, ''); // Remove any invalid characters
+    }
+  }
+  validateCommissionInput(event: any) {
+    const enteredValue = event.target.value;
+    const pattern = /^[1-9]\d*$/; // Regex pattern to allow positive integers
+    if (!pattern.test(enteredValue)) {
+      event.target.value = enteredValue.replace(/[^1-9]/g, ''); // Remove any invalid characters
+    } else {
+      // Check if the value is greater than 100, and if so, set it to 100
+      const numericValue = parseInt(enteredValue, 10);
+      if (numericValue > 100) {
+        event.target.value = '100';
+      }
+    }
+  }
+
 }

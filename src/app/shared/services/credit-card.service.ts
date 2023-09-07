@@ -15,7 +15,7 @@ export class CreditCardService {
 
   GetProviders(filter: any): Observable<ApiResponse> {
     const headers = {
-      Authorization: 'Bearer '+localStorage.getItem("authToken"),
+      Authorization: 'Bearer '+localStorage.getItem("token"),
     };
     return this.http.get<ApiResponse>(
       toFilteringUrl(urlJoin(environment.apiUrl2, 'TerminalProviders/GetProviders'), filter),
@@ -29,7 +29,7 @@ export class CreditCardService {
       Authorization: 'Bearer '+localStorage.getItem("token"),
     };
     return this.http.get<ApiResponse>(
-      (urlJoin(environment.apiUrl2, 'CreditCardType/GetCreditCardTypes')),
+      (urlJoin(environment.apiUrl2, 'CreditCardType/GetCreditCardTypes?Status=2001')),
       { headers }
     );
   }

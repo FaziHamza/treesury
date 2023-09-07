@@ -24,7 +24,7 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <ng-select (clear)="onCTClear()" (change)="handleCardType($event)" class="flex-grow-1 mt-3 mt-md-0"
-                    placeholder="Search By Card" [items]="cardlist" bindLabel="description" bindValue="id">
+                    placeholder="Search By Card" [items]="cardlist" bindLabel="name.lookupName" bindValue="id">
                 </ng-select>
             </div>
             <!-- More Filters -->

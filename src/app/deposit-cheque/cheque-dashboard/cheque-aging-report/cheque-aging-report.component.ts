@@ -196,16 +196,13 @@ export class ChequeAgingReportComponent {
     console.log(this.startDate);
     if (this.startDate) {
       const fromDate = new Date(this.startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
       const formattedFromDate = fromDate.toISOString();
       this.tableConfig.filter.CollectionDate = formattedFromDate;
+
     } else
       this.tableConfig.filter.CollectionDate = this.startDate;
     this.fetchtable()
-  }
-  onDueDateValueChange(event: any) {
-    var pipe = new DatePipe('en-US');
-    this.startDate = pipe.transform(event) || '';
-    this.fetchData();
   }
   removeCollectionDateFilter() {
     (this.startDate = '');

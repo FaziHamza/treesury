@@ -153,7 +153,8 @@
             <label class="custom-label-field">Cheque drawer name <span class="text-danger"> *</span></label>
             <input formControlName="ChequeCustomer" alphabetOnly name="ChequeCustomer" type="text"
               class="form-control custom-input-field" placeholder="Type name" autocomplete="off" trimOnBlurInput
-              required minlength="6" maxlength="30" />
+              required  />
+              <!-- minlength="6" maxlength="30" -->
             <button class="btn btn-remove" type="button" *ngIf="form.get('ChequeCustomer')?.value"
               (click)="remove('ChequeCustomer')">
               <fa-icon [icon]="faXmark"></fa-icon>

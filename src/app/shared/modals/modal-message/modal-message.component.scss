@@ -1,0 +1,28 @@
+.message {
+  padding: 10px;
+  text-align: center;
+  h5 {
+    font-weight: 700;
+    font-size: 18px;
+    color: #1b212d;
+    margin: 0px;
+    padding: 20px;
+  }
+  .fa-circle-check{
+    color: #25BB00;
+    font-size: 28px;
+    vertical-align: middle;
+    margin: 2px 10px 5px;
+  }
+  .fa-circle-xmark{
+    color: #DC3545;
+    font-size: 28px;
+    vertical-align: middle;
+    margin: 2px 10px 5px;
+  }
+}
+
+
+.btns-group {
+  justify-content: center;
+}

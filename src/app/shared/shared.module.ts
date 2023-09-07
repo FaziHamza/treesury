@@ -29,6 +29,7 @@ import { TrimInputDirective } from './directives/trim-input.directive';
 import { TrimOnBlurInputDirective } from './directives/trim-on-blur-input.directive';
 import { CurrencyFormatterDirective } from './directives/currency-formatter.directive';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ModalMessageComponent } from './modals/modal-message/modal-message.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     EditIconComponent,
     LoadingComponent,
     ModalConfirmComponent,
+    ModalMessageComponent,
     ModalLogoutComponent,
     NumberOnlyDirective,
     AlphabetOnlyDirective,
@@ -78,6 +80,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     EditIconComponent,
     LoadingComponent,
     ModalConfirmComponent,
+    ModalMessageComponent,
     ModalLogoutComponent,
     NumberOnlyDirective,
     AlphabetOnlyDirective,
@@ -85,7 +88,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     TrimInputDirective,
     TrimOnBlurInputDirective,
     CurrencyFormatterDirective,
-  
+
   ],
 })
 export class SharedModule {}

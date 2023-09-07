@@ -14,7 +14,7 @@ import {
 import { cloneDeep, get } from 'lodash';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 
-import { TableColumn, TableConfig, TableSort  } from './table-advanced-interfaces';
+import { TableColumn, TableConfig, TableSort } from './table-advanced-interfaces';
 import { TableAdvancedColumnDirective } from './table-advanced.directives';
 import { Router } from '@angular/router';
 
@@ -45,7 +45,7 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
 
   columnTemplates!: { [key: string]: TemplateRef<any> };
   tempData: any[] = [];
-  temptablefoot:any[] =[]
+  temptablefoot: any[] = []
   faArrowUpLong = faArrowUpLong;
   faArrowDownLong = faArrowDownLong;
   constructor(private router: Router) { }
@@ -73,7 +73,7 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
     }
     if (changes['tablefoot']) {
       this.temptablefoot = cloneDeep(this.tablefoot || []);
-      console.log('  this.temptablefoot',  this.temptablefoot);
+      console.log('  this.temptablefoot', this.temptablefoot);
 
     }
   }
@@ -121,13 +121,32 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
         this.router.navigate([this.link, id]);
     }
   }
-  selecteddata: any[] = [];
-
+  @Input() selecteddata: any[] = [];
+  areObjectsEqual(obj1: any, obj2: any) {
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
+  }
   checkAllCheckBox(ev: any) {
     if (ev.target.checked) {
-      this.selecteddata = cloneDeep(this.tempData);
+      this.tempData.forEach(data => {
+        const index = this.selecteddata.findIndex(selectedDataItem => {
+          return this.areObjectsEqual(selectedDataItem, data);
+        });
+
+        if (index === -1) {
+          this.selecteddata.push(data);
+        }
+      });
+      // this.selecteddata = cloneDeep(this.tempData);
     } else {
-      this.selecteddata = [];
+      this.tempData.forEach(data => {
+        const index = this.selecteddata.findIndex(selectedDataItem => {
+          return this.areObjectsEqual(selectedDataItem, data);
+        });
+
+        if (index !== -1) {
+          this.selecteddata.splice(index, 1);
+        }
+      });
     }
     this.tempData.forEach(x => (x.checked = ev.target.checked));
     this.selectedData.emit(this.selecteddata);
@@ -137,8 +156,12 @@ export class TableAdvancedComponent implements OnInit, AfterContentInit, OnChang
     if (event.target.checked) {
       this.selecteddata.push(data);
     } else {
-      let index = this.selecteddata.indexOf(data);
-      this.selecteddata.splice(index, 1);
+      const index = this.selecteddata.findIndex(selectedDataItem => {
+        return this.areObjectsEqual(selectedDataItem, data);
+      });
+      if (index !== -1) {
+        this.selecteddata.splice(index, 1);
+      }
     }
     this.selectedData.emit(this.selecteddata);
   }

@@ -185,8 +185,8 @@
   <div class="row mt-2">
     <div class="col-md-12">
       <app-table-advanced style="cursor: pointer;" [showMultiSelect]="showMultiSelect" [config]="tableConfig"
-        [columns]="tableColumns" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading" [page]="page"
-        [total]="total" (selectedData)="onSelectData($event)" [limit]="limit" (sortUpdated)="onSortChange($event)"
+        [columns]="tableColumns" [selecteddata]="selecteddata" [link]="'deposit-cheque/detail'" [data]="deposites" [loading]="loading" [page]="page"
+        [total]="total" (selectedData)="onSelectData($event)"  [limit]="limit" (sortUpdated)="onSortChange($event)"
         (pageUpdated)="onPageChange($event)">
         <ng-template libTableAdvancedColumn="select" let-row="row">
           <input type="checkbox" value="{{ row }}" *ngIf="showMultiSelect" [(ngModel)]="row.checked"

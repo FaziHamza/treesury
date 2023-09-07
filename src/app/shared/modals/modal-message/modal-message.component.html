@@ -1,0 +1,15 @@
+<div class="message" *ngIf="type == 'success'">
+  <h5> <i class="fa-regular fa-circle-check"></i> {{message}}</h5>
+</div>
+<div class="message" *ngIf="type == 'error'">
+
+  <h5 *ngFor=" let item of messageError"> <i class="fa-regular fa-circle-xmark"></i>
+     {{item.ErrorMessageEn ||   item.errorMessageEn}} </h5>
+
+  <div class="btns-group my-2 text-center">
+    <button type="button" class="btn btn-cancel" (click)="activeModal.close('Close click')">Close</button>
+  </div>
+  <!-- <ul>
+    <li *ngFor=" let item of errors"> {{item.ErrorMessageEn}}</li>
+  </ul> -->
+</div>

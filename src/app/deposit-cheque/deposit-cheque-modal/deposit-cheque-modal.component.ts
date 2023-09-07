@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { ModalMessageComponent } from 'src/app/shared/modals/modal-message/modal-message.component';
 import { DepositService } from 'src/app/shared/services/deposit.service';
 
 @Component({
@@ -71,21 +72,22 @@ export class DepositChequeModalComponent {
       .subscribe({
         next: response => {
           if (response.isSuccess) {
-            this.toastrService.success('Action Successfully Taken');
-            // this.dismissModal();
-            this.close();
-          } else {
-            const errorsList = response?.errors;
-            this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {
-              enableHtml: true,
+            const modalRef = this.modalService.open(ModalMessageComponent);
+            modalRef.componentInstance.type = 'success';
+            modalRef.componentInstance.message = 'Your ' + this.actionType?.name?.[0].lookupName + " Action Successfully Performed";
+            modalRef.componentInstance.loadPageData.subscribe((result: any) => {
+              this.close();
             });
+          } else {
+            const modalRef = this.modalService.open(ModalMessageComponent);
+            modalRef.componentInstance.type = 'error';
+            modalRef.componentInstance.messageError = response?.errors;
           }
         },
-        error: err => {
-          const errors = err?.error?.errors?.map((entry: any) => entry.ErrorMessageEn) || [];
-          this.toastrService.error(errors.length ? errors.join('<br>') : 'Failed!', '', {
-            enableHtml: true,
-          });
+        error: (err) => {
+          const modalRef = this.modalService.open(ModalMessageComponent);
+          modalRef.componentInstance.type = 'error';
+          modalRef.componentInstance.messageError = err?.error?.errors;
         },
       })
       .add(() => (this.isLoading = false));

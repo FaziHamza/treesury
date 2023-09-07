@@ -19,6 +19,7 @@ export class ProfileComponent {
   isShowFullName = false;
   isShowMobile = false;
 
+
   constructor(
     private fb: FormBuilder,
     private toastrService: ToastrService,
@@ -36,7 +37,7 @@ export class ProfileComponent {
     this.form = this.fb.group({
       userId: ['', Validators.required],
       fullName: ['', Validators.required],
-      mobile: '',
+      mobile:['', [Validators.required , Validators.minLength(9)]],
     });
     this.reset();
     this.fetchData();
@@ -59,6 +60,14 @@ export class ProfileComponent {
       .add(() => (this.loading = false));
   }
 
+  limitMobileLength() {
+    const maxLength = 9; // Maximum allowed digits
+    const mobileControl = this.form.get('mobile');
+
+    if (mobileControl?.value && mobileControl?.value.length > maxLength) {
+      mobileControl.setValue(mobileControl.value.slice(0, maxLength));
+    }
+  }
   editUser() {
     if (this.form.valid) {
       this.userService.updateUser(this.form.value).subscribe({
@@ -83,6 +92,7 @@ export class ProfileComponent {
     this.isShowFullName = false;
     this.form.controls['mobile'].disable();
     this.isShowMobile = false;
+    this.fetchData();
   }
 
   editFullname() {

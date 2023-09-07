@@ -5,6 +5,7 @@ import { faCircleNotch, faCloudArrowUp, faXmark } from '@fortawesome/free-solid-
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
+import { ModalMessageComponent } from 'src/app/shared/modals/modal-message/modal-message.component';
 import { DepositService } from 'src/app/shared/services/deposit.service';
 import { RevenueService } from 'src/app/shared/services/revenue.service';
 
@@ -19,6 +20,7 @@ export class ReplaceChequeComponent {
     private fb: FormBuilder,
     private toastrService: ToastrService,
     private depositservice: DepositService,
+    private modalService: NgbModal,
   ) { }
   @Input() actionType: any;
   @Input() details: any;
@@ -133,20 +135,23 @@ export class ReplaceChequeComponent {
           .subscribe({
             next: response => {
               if (response.isSuccess) {
-                this.toastrService.success('Action Successfully Taken');
-                 this.sendtoLoadData.emit('true');
-              } else {
-                const errorsList = response?.errors;
-                this.toastrService.error(errorsList.length ? errorsList.join('<br>') : 'Failed!', '', {
-                  enableHtml: true,
+                const modalRef = this.modalService.open(ModalMessageComponent);
+                modalRef.componentInstance.type = 'success';
+                modalRef.componentInstance.message = 'Your ' + this.actionType?.name?.[0].lookupName + " Action Successfully Performed";
+                modalRef.componentInstance.loadPageData.subscribe((result: any) => {
+                  this.sendtoLoadData.emit('true');
                 });
+                //  this.sendtoLoadData.emit('true');
+              } else {
+                const modalRef = this.modalService.open(ModalMessageComponent);
+                modalRef.componentInstance.type = 'error';
+                modalRef.componentInstance.messageError = response.errors;
               }
             },
-            error: err => {
-              const errors = err?.error?.errors?.map((entry: any) => entry.ErrorMessageEn) || [];
-              this.toastrService.error(errors.length ? errors.join('<br>') : 'Failed!', '', {
-                enableHtml: true,
-              });
+            error: (err) => {
+              const modalRef = this.modalService.open(ModalMessageComponent);
+              modalRef.componentInstance.type = 'error';
+              modalRef.componentInstance.messageError = err?.error?.errors;
             },
           })
           .add(() => (this.isLoading = false));

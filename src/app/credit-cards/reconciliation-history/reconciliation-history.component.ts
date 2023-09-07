@@ -75,7 +75,7 @@ export class ReconciliationHistoryComponent {
         const text: string = value || '';
         if (text?.length >= 0 || (!text?.length && this.tableConfig.filter.NetAmount?.length)) {
           this.tableConfig.filter.NetAmount = text;
-
+          this.page = 1;
           this.GetReconciliationTable()
         }
       });
@@ -178,10 +178,13 @@ export class ReconciliationHistoryComponent {
     console.log(this.startDate);
     if (this.startDate) {
       const fromDate = new Date(this.startDate);
+      fromDate.setDate(fromDate.getDate() + 1); // Adding one day
       const formattedFromDate = fromDate.toISOString();
       this.tableConfig.filter.ReconciliationDate = formattedFromDate;
+
     } else
       this.tableConfig.filter.ReconciliationDate = this.startDate;
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
@@ -191,6 +194,7 @@ export class ReconciliationHistoryComponent {
     (this.startDate = '');
     if (this.datepickerInput)
       this.datepickerInput = '';
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
@@ -198,6 +202,7 @@ export class ReconciliationHistoryComponent {
   removeAmountFilter() {
     this.amountchange.setValue(null);
     this.tableConfig.filter.Amount = '';
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
@@ -205,10 +210,11 @@ export class ReconciliationHistoryComponent {
   filterAmount(event: any) {
     this.amount = event.checked;
 
-    if(!this.amount) {
+    if (!this.amount) {
       this.amount = false
       this.amountchange.setValue(null);
       this.tableConfig.filter.Amount = '';
+      this.page = 1;
       this.GetReconciliationTable()
     }
   }
@@ -217,6 +223,7 @@ export class ReconciliationHistoryComponent {
   removeNetAmountFilter() {
     this.netamountchange.setValue(null);
     this.tableConfig.filter.NetAmount = '';
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
@@ -224,10 +231,11 @@ export class ReconciliationHistoryComponent {
   filterNetAmount(event: any) {
     this.netAmount = event.checked;
 
-    if(!this.netAmount) {
+    if (!this.netAmount) {
       this.netAmount = false
       this.netamountchange.setValue(null);
       this.tableConfig.filter.NetAmount = '';
+      this.page = 1;
       this.GetReconciliationTable()
     }
   }
@@ -274,21 +282,25 @@ export class ReconciliationHistoryComponent {
 
   handleCategoryChange(event: any) {
     this.tableConfig.filter.ProviderId = event.providerId;
+    this.page = 1;
     this.GetReconciliationTable();
   }
 
   onClear() {
     delete this.tableConfig.filter.ProviderId;
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
   onCTClear() {
     delete this.tableConfig.filter.CardTypeId;
+    this.page = 1;
     this.GetReconciliationTable()
   }
 
   handleCardType(event: any) {
     this.tableConfig.filter.CardTypeId = event.id;
+    this.page = 1;
     this.GetReconciliationTable()
   }
   sendid(reconciliationHistoryId: any) {

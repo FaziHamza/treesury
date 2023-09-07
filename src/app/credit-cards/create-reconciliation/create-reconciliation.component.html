@@ -24,7 +24,7 @@
             </div>
             <div class="col-lg-3 col-md-6">
                 <ng-select (clear)="onCTClear()" (change)="handleCardType($event)" class="flex-grow-1 mt-3 mt-md-0"
-                    placeholder="Search By Card" [items]="cardlist" bindLabel="description" bindValue="id">
+                    placeholder="Search By Card" [items]="cardlist" bindLabel="name.lookupName" bindValue="id">
                 </ng-select>
             </div>
             <div class="col-lg-2 col-md-6">
@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="col-lg-12 mt-3">
-        <app-table-advanced [config]="tableConfig" [columns]="tableColumns" [data]="reconciliation" [loading]="loading"
+        <app-table-advanced [config]="tableConfig" [selecteddata]="selecteddata" [columns]="tableColumns" [data]="reconciliation" [loading]="loading"
             [page]="page" [total]="total" [limit]="limit" (sortUpdated)="onSortChange($event)"
             (selectedData)="onSelectData($event)" (pageUpdated)="onPageChange($event)">
 
@@ -92,7 +92,7 @@
             </ng-template>
 
             <ng-template libTableAdvancedColumn="cardCollectionJod" let-row="row">
-                {{ row?.cardCollectionJodNet | number : '1.3-3'}} JOD
+                {{ row?.cardCollectionJod | number : '1.3-3'}} JOD
             </ng-template>
 
             <ng-template libTableAdvancedColumn="commission" let-row="row">
